@@ -2,7 +2,7 @@
 
 ## Sovelluksen tarkoitus
 
-Pasianssin (Klondike) pelaaminen. Eri vaikeustasoja. Sovellus tallettaa tietoa pelatuista peleistä.
+Pasianssin (Klondike) pelaaminen. Eri vaikeustasoja. Sovellus tallettaa tietoa pelatuista peleistä, mikä mahdollistaa omien pelitulosten parantamisen ja vertailun muiden tuloksiin.
 
 ## Käyttäjät
 
