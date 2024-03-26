@@ -1,5 +1,7 @@
 # Ohjelmistotekniikka, harjoitustyö
 
-*Joku* **Peli**.
+## Pasianssi
+
+- [Vaatimusmäärittely](./dokumentaatio/vaatimusmaarittely.md)
 
 [Laskarit](laskarit/)
