@@ -2,6 +2,6 @@
 
 ## Pasianssi
 
-- [Vaatimusmäärittely](./dokumentaatio/vaatimusmaarittely.md)
-- [Työaikakirjanpito](./dokumentaatio/tuntikirjanpito.md)
-- [Muutosloki](./dokumentaatio/changelog.md)
+- [Vaatimusmäärittely](./pasianssi-app/dokumentaatio/vaatimusmaarittely.md)
+- [Työaikakirjanpito](./pasianssi-app/dokumentaatio/tuntikirjanpito.md)
+- [Muutosloki](./pasianssi-app/dokumentaatio/changelog.md)
