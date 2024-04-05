@@ -1,0 +1,4 @@
+class KlondikeView:
+    """
+    Klondiken näkymä. 
+    """

@@ -4,5 +4,4 @@
 
 - [Vaatimusmäärittely](./dokumentaatio/vaatimusmaarittely.md)
 - [Työaikakirjanpito](./dokumentaatio/tuntikirjanpito.md)
-
-[Laskarit](laskarit/)
+- [Muutosloki](./dokumentaatio/changelog.md)
