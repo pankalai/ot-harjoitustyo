@@ -1,5 +1,5 @@
 
 class GameRepository():
-    """Pelattuihin peleihin liittyvistä tietokantaoperaatioista 
+    """Pelattuihin peleihin liittyvistä tietokantaoperaatioista
     vastaava luokka
     """

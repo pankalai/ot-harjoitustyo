@@ -24,14 +24,14 @@ class Klondike:
         self.deck.shuffle()
 
     def draw(self):
-        n = 1
+        pile_n = 1
         for pile in self.piles:
-            for i in range(n):
+            for i in range(pile_n):
                 card = self.deck.deal()
                 pile.append(card)
-                if i == n-1:
+                if i == pile_n-1:
                     card.flip()
-            n += 1
+            pile_n += 1
 
         self.stack = self.deck.cards.copy()
 

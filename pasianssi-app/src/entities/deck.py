@@ -8,6 +8,7 @@ class Deck:
         self.suits = suits
         self.values = values
         self.build()
+        self.n_cards = self.number_of_cards
 
     def build(self):
         self.cards.clear()
