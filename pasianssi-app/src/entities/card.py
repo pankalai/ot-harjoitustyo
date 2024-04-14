@@ -38,13 +38,13 @@ class Card(pygame.sprite.Sprite):
     def set_image(self):
         if self.show:
             image = pygame.image.load(
-                os.path.join(dirname, "..", r"assets\\cards",
+                os.path.join(dirname, "..", r"assets\cards",
                              self.filename + ".png")
             )
             self.front_side_image = True
         else:
             image = pygame.image.load(
-                os.path.join(dirname, "..", r"assets\\cards", "back-side.png")
+                os.path.join(dirname, "..", r"assets\cards", "back-side.png")
             )
             self.front_side_image = False
 
