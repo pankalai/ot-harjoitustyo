@@ -8,7 +8,6 @@ class Deck:
         self.suits = suits
         self.values = values
         self.build()
-        self.n = len(self.cards)
 
     def build(self):
         self.cards.clear()
@@ -30,12 +29,12 @@ class Deck:
         return len(self.cards)
 
     def __iter__(self):
-        self.n = 0
+        self.n_cards = 0
         return self
 
     def __next__(self):
-        if self.n < len(self.cards):
-            card = self.cards[self.n]
-            self.n += 1
+        if self.n_cards < self.number_of_cards:
+            card = self.cards[self.n_cards]
+            self.n_cards += 1
             return card
         raise StopIteration
