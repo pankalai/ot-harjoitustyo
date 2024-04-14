@@ -3,17 +3,17 @@ from entities.card import Card
 
 
 class Deck:
-    def __init__(self, suits, values):
+    def __init__(self, suits, ranks):
         self.cards = []
         self.suits = suits
-        self.values = values
+        self.ranks = ranks
         self.build()
         self.n_cards = self.number_of_cards
 
     def build(self):
         self.cards.clear()
         for suit in self.suits:
-            for value in self.values:
+            for value in self.ranks:
                 self.cards.append(Card(suit, value))
 
     def deal(self):

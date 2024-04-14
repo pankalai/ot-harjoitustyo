@@ -7,10 +7,14 @@
    class Card{
         rank
         suit
+        color
+        show
+        size
+        rect
+        image
     }
     class Deck{
         cards
-        n
     }
     class Klondike{
         deck
