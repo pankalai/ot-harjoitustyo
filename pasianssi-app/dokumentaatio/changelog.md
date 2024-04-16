@@ -8,7 +8,7 @@
 ## Viikko 4
 
 - Laajennettu Card-luokkaa siten, että se perii Sprite-luokan
-- Laajennettu pelin logiikasta vastaavaa Klondike-luokkaa
+- Laajennettu pelin logiikasta vastaavaa Klondike-luokkaa ja tehty testejä
 - Lisätty KlondikeView-luokka, joka vastaa pelin käyttöliittymästä
 - Lisätty käyttöliittymään korttien kuvakkeet
 - Lisätty StartView-luokka, joka tarjoaa mahdollisuuden valita helppo tai vaikea peli
