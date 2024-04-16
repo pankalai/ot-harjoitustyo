@@ -9,4 +9,5 @@
 | 6.4.  | 5    | yksinkertaisen aloitusnäkymän luonti |
 | 7.4.  | 6    | spritejen toiminnallisuuteen tutustuminen, pelinäkymän toteutuksen aloitus |
 | 11.4. | 5    | klondike-luokan jatkokehitys ja pelinäkymän toiminnallisuuksien edistäminen |
-| 12.4. | 6    | card-luokan refaktorointi |
+| 12.4. | 6    | card-luokan laajennus |
+| 15.4. | 7    | Klondike-luokan refaktorointi, korttiryhmien muuttaminen omiksi luokiksi |
