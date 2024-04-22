@@ -1,50 +1,49 @@
 import pygame
 from ui.klondike_view import KlondikeView
+from ui.button import Button
 
 class StartView:
     """
     Pelin alkunäkymä. 
-    Käyttäjänimen ja vaikeustason valinta.
+    Käyttäjänimen antaminen ja vaikeustason valinta.
     """
+    
+    button_size = (115, 60)
 
-    def __init__(self, window):
+    button_color = (114, 214, 114)
+    text_color = (16,48,16)
+    text_color2 = (59, 19, 19)
+
+    header_font_size = 48
+    text_font_size = 24
+
+    def __init__(self, window, background_color):
         self.window = window
         self.width, self.height = window.get_size()
 
+        self.background_color = background_color
+        
+        self.header_font = pygame.font.Font(None, StartView.header_font_size)
+        self.text_font = pygame.font.Font(None, StartView.text_font_size)
+
     def _start(self):
-        font = pygame.font.Font(None, 24)
+        
+        header = self.header_font.render('Tervetuloa pelaamaan Pasianssia!', True, StartView.text_color2)
+        header_rect = header.get_rect(center=(self.width/2, self.height/3))
 
-        button_color = (117, 223, 134)
+        # Window
+        self.window.fill(self.background_color)
 
-        button_surface1 = pygame.Surface((100, 75))
-        button_surface2 = pygame.Surface((100, 75))
+        # Header
+        self.window.blit(header, header_rect)
 
-        button_surface1.fill(button_color)
-        button_surface2.fill(button_color)
+        # Buttons
+        top_pos = self.height/2
+        button_easy = Button("Helppo",((self.width/2)*0.8-self.button_size[0]/2,top_pos),StartView.button_size,StartView.button_color,StartView.text_color)
+        button_difficult = Button("Vaikea",((self.width/2)*1.2-self.button_size[0]/2,top_pos),StartView.button_size,StartView.button_color,StartView.text_color)
 
-        text_color = (59, 73, 61)
-        text1 = font.render("Helppo", True, text_color)
-        text2 = font.render("Vaikea", True, text_color)
-
-        text_rect1 = text1.get_rect(
-            center=(button_surface1.get_width()/2, button_surface1.get_height()/2))
-        text_rect2 = text2.get_rect(
-            center=(button_surface2.get_width()/2, button_surface2.get_height()/2))
-
-        button_width = 150
-        button_height = 50
-        button_level1_rect = pygame.Rect((self.width/2)*0.85-button_width/2, (self.height/2), button_width, button_height)
-        button_level2_rect = pygame.Rect((self.width/2)*1.15, (self.height/2), button_width, button_height)
-
-        self.window.fill((0, 0, 0))
-
-        button_surface1.blit(text1, text_rect1)
-        button_surface2.blit(text2, text_rect2)
-
-        self.window.blit(
-            button_surface1, (button_level1_rect.x, button_level1_rect.y))
-        self.window.blit(
-            button_surface2, (button_level2_rect.x, button_level2_rect.y))
+        button_easy.draw(self.window)
+        button_difficult.draw(self.window)
 
         pygame.display.update()
 
@@ -55,16 +54,14 @@ class StartView:
                 if event.type == pygame.QUIT:
                     running = False
                 if event.type == pygame.MOUSEBUTTONUP:
-                    if button_level1_rect.collidepoint(event.pos):
+                    if button_easy.clicked(event.pos):
                         level = 1
-                    if button_level2_rect.collidepoint(event.pos):
+                    elif button_difficult.clicked(event.pos):
                         level = 3
 
                 if level:
-                    self.window.fill((0, 0, 0))
+                    self.window.fill(self.background_color)
                     pygame.display.update()
-                    return level        
-
-            
+                    return level
 
         return None

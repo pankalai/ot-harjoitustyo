@@ -3,8 +3,9 @@ import pygame
 
 dirname = os.path.dirname(__file__)
 
+
 class Card(pygame.sprite.Sprite):
-    def __init__(self, suit, rank, show = False, size = (0,0)):
+    def __init__(self, suit, rank, show=False, size=(0, 0), position=(0, 0)):
         super().__init__()
 
         self.suit = suit
@@ -18,22 +19,20 @@ class Card(pygame.sprite.Sprite):
         else:
             self.color = None
 
-        self.size = size
+        self.image_size = size
         self.set_image()
-
-        self.rect = None
+        self.set_position(position)
 
     def flip(self):
         self.show = not self.show
 
     def set_image_size(self, size):
-        self.size = size
+        self.image_size = size
         self.set_image()
 
     def set_position(self, position):
         self.rect = self.image.get_rect()
-        self.rect.x = position[0]
-        self.rect.y = position[1]
+        self.rect.x, self.rect.y = position
 
     def set_image(self):
         if self.show:
@@ -48,9 +47,8 @@ class Card(pygame.sprite.Sprite):
             )
             self.front_side_image = False
 
-        self.image = pygame.transform.scale(image, self.size)
+        self.image = pygame.transform.smoothscale(image, self.image_size)
 
-    @property
     def alternative_rank(self):
         if self.rank == 1:
             file_rank = "ace"
@@ -66,7 +64,7 @@ class Card(pygame.sprite.Sprite):
 
     @property
     def filename(self):
-        return f"{self.alternative_rank}_of_{self.suit.lower()}"
+        return f"{self.alternative_rank()}_of_{self.suit.lower()}"
 
     def update(self):
         if self.show != self.front_side_image:

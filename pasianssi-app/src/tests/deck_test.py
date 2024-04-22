@@ -6,7 +6,7 @@ class TestDeck(unittest.TestCase):
     def setUp(self):
         suits = ["Spades", "Clubs", "Diamonds", "Hearts"]
         values = range(1, 14)
-        self.deck = Deck(suits,values)
+        self.deck = Deck(suits, values)
 
     def test_luodussa_pakassa_oikea_maara_kortteja(self):
         self.assertEqual(self.deck.number_of_cards, 52)
