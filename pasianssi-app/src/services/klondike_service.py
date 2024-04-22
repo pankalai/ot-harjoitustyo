@@ -57,7 +57,7 @@ class Klondike:
                 card.flip()
 
     def add_to_pile(self, card_list, pile):
-        if self.valid_to_pile(card_list[0], pile):
+        if valid_to_pile(card_list[0], pile):
             for card in card_list:
                 self.group_handler.add_to_group(card, pile)
             return True
@@ -73,41 +73,26 @@ class Klondike:
             return False
 
         if foundation:
-            if self.valid_to_foundation(card, foundation):
+            if valid_to_foundation(card, foundation):
                 self.group_handler.add_to_group(card, foundation)
                 return True
         else:
             for fnd in self.foundations:
-                if self.valid_to_foundation(card, fnd):
+                if valid_to_foundation(card, fnd):
                     self.group_handler.add_to_group(card, fnd)
                     return True
         return False
 
-    def valid_to_pile(self, card, pile):
-        if pile.is_empty():
-            return card.rank == 13
-
-        top_card = pile.get_top_cards(1)[0]
-        if top_card.color != card.color and top_card.rank == card.rank+1:
-            return True
-        return False
-
-    def valid_to_foundation(self, card, foundation):
-        if foundation.is_empty():
-            if card.rank == 1:
-                return True
-            return False
-        top_card = foundation.get_top_cards(1)[0]
-        return top_card.suit == card.suit and top_card.rank == card.rank-1
-
     def get_card_group(self, card):
         return self.group_handler.get_current_group(card)
 
+    def get_foundation_top_cards(self, foundation):
+        if foundation in self.foundations:
+            return foundation.get_top_cards(2)
+        return None
+
     def get_waste_top_cards(self):
         return self.waste.get_top_cards(3)
-
-    def get_foundation_top_cards(self, foundation):
-        return foundation.get_top_cards(2)
 
     def get_sub_cards(self, card):
         group = self.group_handler.get_current_group(card)
@@ -120,3 +105,22 @@ class Klondike:
 
     def game_won(self):
         return not (False in [group.number_of_cards == 13 for group in self.foundations])
+
+
+def valid_to_pile(card, pile):
+    if pile.is_empty():
+        return card.rank == 13
+
+    top_card = pile.get_top_cards(1)[0]
+    if top_card.color != card.color and top_card.rank == card.rank+1:
+        return True
+    return False
+
+
+def valid_to_foundation(card, foundation):
+    if foundation.is_empty():
+        if card.rank == 1:
+            return True
+        return False
+    top_card = foundation.get_top_cards(1)[0]
+    return top_card.suit == card.suit and top_card.rank == card.rank-1

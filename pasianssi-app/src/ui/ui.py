@@ -9,7 +9,7 @@ class UI:
 
     def __init__(self, window):
         self.window = window
-        self.background_color = (219,219,200)
+        self.background_color = (219, 219, 200)
 
     def start(self):
         game = StartView(self.window, self.background_color)
