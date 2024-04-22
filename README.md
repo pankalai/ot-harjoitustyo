@@ -2,6 +2,8 @@
 
 Sovelluksessa voi pelata Klondike-pasianssia, jossa tavoitteena on saada pinottua kaikki kortit maittain neljään niin sanottuun peruspakkaan järjestyksessä ässästä kuninkaaseen.
 
+[Release](https://github.com/pankalai/ot-harjoitustyo/releases/tag/viikko5)
+
 ## Dokumentaatio
 
 - [Vaatimusmäärittely](./pasianssi-app/dokumentaatio/vaatimusmaarittely.md)
