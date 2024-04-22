@@ -4,6 +4,10 @@
  classDiagram
     Card "*" -- "1" Deck
     Klondike "1" -- "1" Deck
+	Klondike "1" -- "1" GroupHandler
+	Klondike "1" -- "6" CardGroup
+    Klondike "1" -- "7" Pile
+    CardGroup <|-- Pile
    class Card{
         rank
         suit
