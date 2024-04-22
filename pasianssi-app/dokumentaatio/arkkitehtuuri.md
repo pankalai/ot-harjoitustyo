@@ -8,6 +8,8 @@
 	Klondike "1" -- "6" CardGroup
     Klondike "1" -- "7" Pile
     CardGroup <|-- Pile
+    GroupHandler ..|> Pile
+    GroupHandler ..|> CardGroup
    class Card{
         rank
         suit
