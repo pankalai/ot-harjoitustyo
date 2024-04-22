@@ -30,6 +30,12 @@
         foundations
         turning_cards
     }
+    class GroupHandler{
+        groups
+    }
+    class CardGroup{
+        cards
+    }
 ```
 
 ## Toiminnallisuudet
