@@ -1,6 +1,8 @@
-# Ohjelmistotekniikka, harjoitustyö
+# Pasianssi
 
-## Pasianssi
+Sovelluksessa voi pelata Klondike-pasianssia, jossa tavoitteena on saada pinottua kaikki kortit maittain neljään niin sanottuun peruspakkaan järjestyksessä ässästä kuninkaaseen.
+
+## Dokumentaatio
 
 - [Vaatimusmäärittely](./pasianssi-app/dokumentaatio/vaatimusmaarittely.md)
 - [Arkkitehtuurikuvaus](./pasianssi-app/dokumentaatio/arkkitehtuuri.md)
@@ -8,7 +10,7 @@
 - [Muutosloki](./pasianssi-app/dokumentaatio/changelog.md)
 
 
-# Asennus
+## Asennus
 
 1. Asenna riippuvuudet komennolla:
 ```
@@ -21,9 +23,9 @@ poetry run invoke start
 ```
 
 
-# Komentorivitoiminnot
+## Komentorivitoiminnot
 
-## Ohjelman suorittaminen
+### Ohjelman suorittaminen
 
 Ohjelman pystyy suorittamaan komennolla:
 
@@ -31,14 +33,14 @@ Ohjelman pystyy suorittamaan komennolla:
 poetry run invoke start
 ```
 
-## Testaus
+### Testaus
 
 Testit suoritetaan komennolla:
 ```
 poetry run invoke test
 ```
 
-## Testikattavuus
+### Testikattavuus
 
 Testikattavuusraportin voi generoida komennolla:
 ```
@@ -46,7 +48,7 @@ poetry run invoke coverage-report
 ```
 Raportti generoituu htmlcov-hakemistoon.
 
-## Pylint
+### Pylint
 
 Tiedoston .pylintrc määrittelemät tarkistukset voi suorittaa komennolla:
 ```
