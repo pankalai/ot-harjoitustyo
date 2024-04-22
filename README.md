@@ -14,6 +14,7 @@ Sovelluksessa voi pelata Klondike-pasianssia, jossa tavoitteena on saada pinottu
 
 ## Asennus
 
+Mene pasianssi-app hakemistoon
 1. Asenna riippuvuudet komennolla:
 ```
 poetry install
