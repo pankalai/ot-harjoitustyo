@@ -18,3 +18,5 @@
 | 21.4. | 3    | koodin siistimistä |
 |       | 1    | uusien testien luonti |
 | 22.4  | 3    | alkunäkymän refaktorointi |
+---------------------------------------------------------------------
+		| 54   |
