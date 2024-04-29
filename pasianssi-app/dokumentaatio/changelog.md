@@ -21,3 +21,8 @@
 - Lisätty GrabbedCards-luokka, joka vastaa käyttöliittymässä korttien siirtämisestä
 - Lisätty Button-luokka, joka vastaa käyttöliittymän painikkeista
 - Pelaaja voi siirtää kortteja raahaamalla pinosta toiseen ja peruspakkaan tai peruspakasta takaisin pinoon
+
+## 6
+- Lisätty Element-luokka, joka toimii yliluokkana käyttöliittymän objekteille, esimerkiksi painikkeille ja tekstikentälle
+- Pelaaja voi antaa nimimerkin
+- Pelaaja näkee tehtyjen siirtojen määrän ja pelikellon

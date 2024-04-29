@@ -26,11 +26,24 @@ class KlondikeView:
     empty_stack_color = (0, 0, 255)
     empty_foundation_color = (255, 0, 0)
 
-    def __init__(self, window, background_color, level):
+    font_color = (55, 55, 55)
+    font_size = 15
+
+    def __init__(self, window, background_color, clock):
         self.window = window
         self.background_color = background_color
 
-        self.game = Klondike(level)
+        self.game = Klondike()
+        self.moves = 0
+
+        self._clock = clock
+        self.font = pygame.font.Font(
+            pygame.font.get_default_font(), KlondikeView.font_size)
+        self.text = self.font.render("", True, KlondikeView.font_color)
+        self.time_rect = self.text.get_rect(bottomright=(
+            self.window.get_width()/1.15, self.window.get_height()))
+        self.moves_rect = self.text.get_rect(midbottom=(
+            self.window.get_width()/2, self.window.get_height()))
 
         self.waste = pygame.sprite.LayeredUpdates()
 
@@ -54,23 +67,32 @@ class KlondikeView:
         self.update_piles_flag = False
         self.update_waste_flag = False
 
-    def _play(self):
-        self.game.prepare()
+    def _play(self, start_new=True, level=None):
+        if start_new:
+            self.game.set_level(level)
+            self.game.prepare()
 
-        # Set size of cards
-        for card in self.game.deck:
-            card.set_image_size(KlondikeView.card_size)
+            # Set size of cards
+            for card in self.game.deck:
+                card.set_image_size(KlondikeView.card_size)
 
-        self.game.draw()
-        self._initialize_sprites()
+            self.game.draw()
+            self._initialize_sprites()
+
+            self._clock.start_clock()
+
         self._main_loop()
 
-        if self.game.game_won():
-            return True
+        return self.game.game_won()
 
-        return False
+    def _initialize_infobar(self):
+        pass
 
     def _initialize_sprites(self):
+
+        self.waste.empty()
+        self.foundations_cards.empty()
+        self.piles_cards.empty()
 
         # Create rects of foundations
         left_pos, top_pos = KlondikeView.foundation_position
@@ -107,10 +129,9 @@ class KlondikeView:
 
         while not self.game.game_won():
             if self._handle_events() == False:
-                # end = show_message_window
-                # if end:
                 break
             self._draw()
+            self._clock.tick(60)
 
     def _handle_events(self):
 
@@ -125,7 +146,7 @@ class KlondikeView:
                         self._handle_double_click()
 
                 elif not self.grabbed_cards.is_empty():
-                    self._check_collision(self.grabbed_cards.key_object())
+                    self._check_collision(self.grabbed_cards.bottom_card())
 
                 self.grabbed_cards.clear()
                 self.click_time = time.time()
@@ -174,23 +195,36 @@ class KlondikeView:
         self.waste.draw(self.window)
         self.piles_cards.draw(self.window)
 
+        # Clock
+        self.time_text = self.font.render(
+            self._clock.elapsed_time(), True, KlondikeView.font_color)
+        self.window.blit(self.time_text, self.time_rect)
+
+        # Moves
+        self.moves_text = self.font.render(
+            "Siirrot: " + str(self.moves), True, KlondikeView.font_color)
+        self.window.blit(self.moves_text, self.moves_rect)
+
         pygame.display.update()
 
     def _handle_double_click(self):
         if self.game.add_to_foundation(self.double_clicked):
             self.double_clicked.kill()
-            self.update_waste_flag = True
             self.update_foundations_flag = True
-            self.update_piles_flag = True
+            self.moves += 1
+
+        self.update_waste_flag = True
+        self.update_piles_flag = True
 
         self.double_clicked = None
 
     def _clicked_sprite(self, position, double_click=False):
         # Waste
-        if not self.game.waste.is_empty():
-            card = self.game.get_waste_top_cards()[-1]
-            if card.rect.collidepoint(position):
-                return card
+
+        cards = self.game.get_waste_top_cards()
+        if cards:
+            if cards[-1].rect.collidepoint(position):
+                return cards[-1]
 
         # Piles and foundations
         found_card = None
@@ -231,6 +265,9 @@ class KlondikeView:
                 if pygame.sprite.collide_rect(sprite, foundation):
                     if self.game.add_to_foundation(self.grabbed_cards.get_list(), foundation):
                         break
+
+        if move_accepted:
+            self.moves += 1
 
         self.update_foundations_flag = True
         self.update_piles_flag = True

@@ -3,7 +3,7 @@ class GrabbedCards:
         self.cards = []
         self.list_n = 0
 
-    def key_object(self):
+    def bottom_card(self):
         return self.cards[0]
 
     def clear(self):

@@ -18,5 +18,7 @@
 | 21.4. | 3    | koodin siistimistä |
 |       | 1    | uusien testien luonti |
 | 22.4  | 3    | alkunäkymän refaktorointi |
+| 25.4  | 6    | message boxin toiminnallisuuden toteutus |
+| 26.4  | 4    | pelikellon ja siirtojen määrän lisäys pelinäkymään |
 ---------------------------------------------------------------------
-		| 54   |
+		| 64   |

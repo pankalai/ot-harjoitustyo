@@ -2,68 +2,112 @@ from entities.deck import Deck
 from entities.card import Card
 from entities.card_group import CardGroup
 from entities.pile import Pile
-from entities.group_handler import GroupHandler
+from services.group_handler import GroupHandler as default_group_handler
 
 
 class Klondike:
+    """Klondike-pasianssin logiikasta vastaava luokka
     """
-    Klondike-pelin logiikasta vastaava luokka
-    """
+
     suits = ["Spades", "Clubs", "Diamonds", "Hearts"]
     ranks = range(1, 14)
 
-    def __init__(self, level=3, group_handler=GroupHandler()):
+    def __init__(self, group_handler=default_group_handler()):
+        """Luokan konstruktori
+
+        Args:
+            group_handler (_type_, optional): Pelin korttien siirtelystä vastaava olio. 
+            Oletuksena GroupHandler().
+        """
         self.deck = Deck(Klondike.suits, Klondike.ranks)
 
         self.piles = [Pile() for _ in range(7)]
         self.foundations = [CardGroup() for _ in range(4)]
-        self.stack = CardGroup()
-        self.waste = CardGroup()
+        self._stack = CardGroup()
+        self._waste = CardGroup()
 
-        self.group_handler = group_handler
+        self._group_handler = group_handler
 
+        self.turning_cards = None
+
+    def set_level(self, level: int):
+        """Pelin vaikeustason asettaminen
+
+        Args:
+            level (int): Käsipakasta kerralla käännettävien korttien määrä
+        """
         if level == 1:
             self.turning_cards = 1
         elif level == 3:
             self.turning_cards = 3
 
     def prepare(self):
+        """Valmistelee pelin luomalla pakan ja sekoittamalla sitä 
+        sekä tyhjentämällä eri korttiryhmät
+        """
+        self.deck.build()
         self.deck.shuffle()
+        self._group_handler.clear_groups()
 
     def draw(self):
+        """Jakaa kortit pinoihin ja asettaa loput kortit käsipakkaan
+        """
         pile_n = 1
         for pile in self.piles:
             for i in range(pile_n):
                 card = self.deck.deal()
-                self.group_handler.add_to_group(card, pile)
+                self._group_handler.add_to_group(card, pile)
                 if i == pile_n-1:
                     card.flip()
             pile_n += 1
 
         for card in self.deck:
-            self.group_handler.add_to_group(card, self.stack)
+            self._group_handler.add_to_group(card, self._stack)
 
-        self.stack.reverse()
+        self._stack.reverse()
 
     def deal(self):
-        if not self.stack.is_empty():
-            for _ in range(min(self.turning_cards, self.stack.number_of_cards)):
-                card = self.stack.get_top_cards(1)[0]
-                self.group_handler.add_to_group(card, self.waste)
+        """Korttien kääntäminen käsipakasta
+        """
+        if not self._stack.is_empty():
+            for _ in range(min(self.turning_cards, self._stack.number_of_cards)):
+                card = self._stack.get_top_cards(1)[0]
+                self._group_handler.add_to_group(card, self._waste)
                 card.flip()
         else:
-            for card in self.waste:
-                self.group_handler.add_to_group(card, self.stack)
+            for card in self._waste:
+                self._group_handler.add_to_group(card, self._stack)
                 card.flip()
 
-    def add_to_pile(self, card_list, pile):
-        if valid_to_pile(card_list[0], pile):
-            for card in card_list:
-                self.group_handler.add_to_group(card, pile)
-            return True
+    def add_to_pile(self, card_list: list, pile: Pile):
+        """Lisää yhden tai useamman kortin pinoon, jos se on sallittua
+
+        Args:
+            card_list (list): Card-luokan olio
+            pile (Pile): Pile-luokan olio
+
+        Returns:
+            True, jos siirto on sallittu
+        """
+        if pile in self.piles:
+            if valid_to_pile(card_list[0], pile):
+                for card in card_list:
+                    self._group_handler.add_to_group(card, pile)
+                return True
         return False
 
     def add_to_foundation(self, card, foundation=None):
+        """Lisää kortin peruspakkaan. Jos peruspakkaa ei ole määritelty, 
+        käy läpi kaikki peruspakat.
+
+        Args:
+            card (_type_): Card-luokan olio tai lista, joka sisältää Card-luokan olion
+            foundation (_type_, optional): Foundation-luokan olio. 
+            Peruspakka, johon kortti lisätään.
+
+        Returns:
+            True, jos kortti voidaan siirtää peruspakkaan
+        """
         if isinstance(card, list):
             if len(card) > 1:
                 return False
@@ -73,41 +117,92 @@ class Klondike:
             return False
 
         if foundation:
-            if valid_to_foundation(card, foundation):
-                self.group_handler.add_to_group(card, foundation)
-                return True
+            if foundation in self.foundations:
+                if valid_to_foundation(card, foundation):
+                    self._group_handler.add_to_group(card, foundation)
+                    return True
         else:
             for fnd in self.foundations:
                 if valid_to_foundation(card, fnd):
-                    self.group_handler.add_to_group(card, fnd)
+                    self._group_handler.add_to_group(card, fnd)
                     return True
         return False
 
-    def get_card_group(self, card):
-        return self.group_handler.get_current_group(card)
+    def get_card_group(self, card: Card):
+        """Palauttaa ryhmän, jossa kortti sillä hetkellä on
 
-    def get_foundation_top_cards(self, foundation):
+        Args:
+            card (Card): kortti, jonka ryhmä haetaan
+
+        Returns:
+            Ryhmän olio, jossa kortti on
+        """
+        return self._group_handler.get_current_group(card)
+
+    def get_foundation_top_cards(self, foundation: CardGroup):
+        """Palauttaa peruspakan kaksi päällimmäistä korttia
+
+        Args:
+            foundation (CardGroup): Peruspakka, jonka päällimmäiset kortit haetaan. 
+            CardGroup-luokan olio.
+
+        Returns:
+            Lista kortteja. Jos parametrina oleva korttiryhmä ei ole peruspakka, niin None.
+        """
         if foundation in self.foundations:
             return foundation.get_top_cards(2)
         return None
 
     def get_waste_top_cards(self):
-        return self.waste.get_top_cards(3)
+        """Palauttaa kolme päällimmäistä käsipakasta käännettyä korttia
 
-    def get_sub_cards(self, card):
-        group = self.group_handler.get_current_group(card)
+        Returns:
+            Lista kortteja.
+        """
+        return self._waste.get_top_cards(3)
+
+    def get_sub_cards(self, card: Card):
+        """Palauttaa tietyn kortin päällä olevat kortit (sisältäen myös haettavan kortin)
+
+        Args:
+            card (Card): Kortti, jonka päällä olevat kortit haetaan. Card-luokan olio.
+
+        Returns:
+            Lista kortteja. Jos kortti ei ole missään pinossa, 
+            niin palautettavassa listassa on pelkästään haettu kortti.
+        """
+        group = self._group_handler.get_current_group(card)
         if isinstance(group, Pile):
             return group.get_sub_cards(card)
         return [card]
 
     def stack_is_empty(self):
-        return self.stack.is_empty()
+        """Onko käsipakka tyhjä
+
+        Returns:
+            True, jos käsipakassa ei ole kortteja eli joko kaikki on käännetty tai pelattu pöytään
+        """
+        return self._stack.is_empty()
 
     def game_won(self):
+        """Onko peli päättynyt eli onko jokaisessa peruspakassa 13 korttia
+
+        Returns:
+            True, jos kaikki kortit ovat peruspakoissa
+        """
         return not (False in [group.number_of_cards == 13 for group in self.foundations])
 
 
-def valid_to_pile(card, pile):
+def valid_to_pile(card: Card, pile: Pile):
+    """Onko kortti kelvollinen pinoon
+
+    Args:
+        card (Card): Kortti, jota ollaan siirtämässä. Card-luokan olio.
+        pile (Pile): Pino, johon ollaan siirtämässä. Pile-luokan olio.
+
+    Returns:
+        True, jos kortti on kelvollinen pinoon
+    """
     if pile.is_empty():
         return card.rank == 13
 
@@ -117,10 +212,18 @@ def valid_to_pile(card, pile):
     return False
 
 
-def valid_to_foundation(card, foundation):
+def valid_to_foundation(card: Card, foundation: CardGroup):
+    """Onko kortti kelvollinen peruspakkaan
+
+    Args:
+        card (Card): Kortti, jota ollaan siirtämässä. Card-luokan olio.
+        foundation (CardGroup): Peruspakka, johon ollaan siirtämässä. CardGroup-luokan olio.
+
+    Returns:
+        True, jos kortti on kelvollinen peruspakkaan
+    """
     if foundation.is_empty():
-        if card.rank == 1:
-            return True
-        return False
+        return card.rank == 1
+
     top_card = foundation.get_top_cards(1)[0]
     return top_card.suit == card.suit and top_card.rank == card.rank-1

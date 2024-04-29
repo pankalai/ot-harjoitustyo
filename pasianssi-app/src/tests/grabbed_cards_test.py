@@ -9,6 +9,9 @@ class TestPile(unittest.TestCase):
 
         self.card1 = Card("Spades", 1)
         self.card2 = Card("Diamonds", 1)
+        self.card1.set_image_size((0,0))
+        self.card2.set_image_size((0,0))
+        self.card1.set_position((0, 0))
         self.card2.set_position((10, 20))
 
         self.grabbed_cards.add(self.card1)
