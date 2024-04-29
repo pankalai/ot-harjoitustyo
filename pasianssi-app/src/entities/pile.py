@@ -15,7 +15,7 @@ class Pile(CardGroup):
             card (Card): Card-luokan olio
 
         Returns:
-            Lista, jossa haettava kortti ja sen päällä olevat kortit. 
+            Lista, jossa haettava kortti ja sen päällä olevat kortit.
             Jos korttia ei ole pinossa, niin tyhjä lista.
         """
         sub_cards = []
