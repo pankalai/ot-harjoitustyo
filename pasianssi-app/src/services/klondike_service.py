@@ -16,7 +16,7 @@ class Klondike:
         """Luokan konstruktori
 
         Args:
-            group_handler (_type_, optional): Pelin korttien siirtelystä vastaava olio. 
+            group_handler (_type_, optional): Pelin korttien siirtelystä vastaava olio.
             Oletuksena GroupHandler().
         """
         self.deck = Deck(Klondike.suits, Klondike.ranks)
@@ -42,7 +42,7 @@ class Klondike:
             self.turning_cards = 3
 
     def prepare(self):
-        """Valmistelee pelin luomalla pakan ja sekoittamalla sitä 
+        """Valmistelee pelin luomalla pakan ja sekoittamalla sitä
         sekä tyhjentämällä eri korttiryhmät
         """
         self.deck.build()
@@ -97,12 +97,12 @@ class Klondike:
         return False
 
     def add_to_foundation(self, card, foundation=None):
-        """Lisää kortin peruspakkaan. Jos peruspakkaa ei ole määritelty, 
+        """Lisää kortin peruspakkaan. Jos peruspakkaa ei ole määritelty,
         käy läpi kaikki peruspakat.
 
         Args:
             card (_type_): Card-luokan olio tai lista, joka sisältää Card-luokan olion
-            foundation (_type_, optional): Foundation-luokan olio. 
+            foundation (_type_, optional): Foundation-luokan olio.
             Peruspakka, johon kortti lisätään.
 
         Returns:
@@ -143,7 +143,7 @@ class Klondike:
         """Palauttaa peruspakan kaksi päällimmäistä korttia
 
         Args:
-            foundation (CardGroup): Peruspakka, jonka päällimmäiset kortit haetaan. 
+            foundation (CardGroup): Peruspakka, jonka päällimmäiset kortit haetaan.
             CardGroup-luokan olio.
 
         Returns:
@@ -168,7 +168,7 @@ class Klondike:
             card (Card): Kortti, jonka päällä olevat kortit haetaan. Card-luokan olio.
 
         Returns:
-            Lista kortteja. Jos kortti ei ole missään pinossa, 
+            Lista kortteja. Jos kortti ei ole missään pinossa,
             niin palautettavassa listassa on pelkästään haettu kortti.
         """
         group = self._group_handler.get_current_group(card)

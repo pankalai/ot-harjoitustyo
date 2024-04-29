@@ -17,7 +17,7 @@ class Card(pygame.sprite.Sprite):
         Args:
             suit (str): kortin maa
             rank (int): kortin arvo
-            show (bool, optional): onko kortti näkyvissä eli kuvapuoli ylöspäin, 
+            show (bool, optional): onko kortti näkyvissä eli kuvapuoli ylöspäin,
             oletusarvona kuvapuoli on alaspäin
         """
         super().__init__()

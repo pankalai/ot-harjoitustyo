@@ -79,8 +79,8 @@ class CardGroup(pygame.sprite.Sprite):
             number (int, optional): palautettavien korttien määrä, oletusarvo 1
 
         Returns:
-            Argumentin mukainen määrä kortteja listana. 
-            Palautettavien korttien määrä on korkeintaan yhtä suuri kuin 
+            Argumentin mukainen määrä kortteja listana.
+            Palautettavien korttien määrä on korkeintaan yhtä suuri kuin
             ryhmässä olevien korttien määrä.
         """
         return [self.cards[-1-i] for i in reversed(range(min(number, len(self.cards))))]
