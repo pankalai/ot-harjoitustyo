@@ -8,6 +8,7 @@ authors = ["Anssi Pänkäläinen <anssi.pankalainen@helsinki.fi>"]
 python = "^3.8"
 pygame = "^2.5.2"
 invoke = "^2.2.0"
+python-dotenv = "^1.0.1"
 
 
 [tool.poetry.group.dev.dependencies]

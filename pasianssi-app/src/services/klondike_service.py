@@ -2,7 +2,8 @@ from entities.deck import Deck
 from entities.card import Card
 from entities.card_group import CardGroup
 from entities.pile import Pile
-from services.group_handler import GroupHandler as default_group_handler
+from services.group_handler import GroupHandler
+from services.klondike_renderer import KlondikeRenderer
 
 
 class Klondike:
@@ -12,7 +13,7 @@ class Klondike:
     suits = ["Spades", "Clubs", "Diamonds", "Hearts"]
     ranks = range(1, 14)
 
-    def __init__(self, group_handler=default_group_handler()):
+    def __init__(self, group_handler=GroupHandler(), renderer=KlondikeRenderer()):
         """Luokan konstruktori
 
         Args:

@@ -2,6 +2,8 @@ import os
 import pygame
 from services.klondike_service import Klondike
 from entities.grabbed_cards import GrabbedCards
+from services.clock import Clock
+import ui_settings
 import time
 
 dirname = os.path.dirname(__file__)
@@ -11,35 +13,35 @@ class KlondikeView:
     """
     Klondiken näkymä. 
     """
-    card_size = (75, 110)
+    # card_size = (75, 110)
 
-    stack_position = (50, 50)
-    waste_position = (150, 50)
-    pile_position = (50, 200)
-    foundation_position = (325, 50)
+    # stack_position = (50, 50)
+    # waste_position = (150, 50)
+    # pile_position = (50, 200)
+    # foundation_position = (325, 50)
 
-    waste_offset = card_size[0]*0.25
-    pile_offset_left = card_size[0]*1.25
-    pile_offset_top = card_size[0]*0.25
-    foundation_offset = card_size[0]*1.25
+    # waste_offset = card_size[0]*0.25
+    # pile_offset_left = card_size[0]*1.25
+    # pile_offset_top = card_size[0]*0.25
+    # foundation_offset = card_size[0]*1.25
 
-    empty_stack_color = (0, 0, 255)
-    empty_foundation_color = (255, 0, 0)
+    # empty_stack_color = (0, 0, 255)
+    # empty_foundation_color = (255, 0, 0)
 
-    font_color = (55, 55, 55)
-    font_size = 15
+    # font_color = (55, 55, 55)
+    # font_size = 15
 
-    def __init__(self, window, background_color, clock):
+    def __init__(self, window):
         self.window = window
-        self.background_color = background_color
+        self.background_color = ui_settings.background_color
 
         self.game = Klondike()
         self.moves = 0
 
-        self._clock = clock
+        self._clock = Clock()
         self.font = pygame.font.Font(
-            pygame.font.get_default_font(), KlondikeView.font_size)
-        self.text = self.font.render("", True, KlondikeView.font_color)
+            pygame.font.get_default_font(), ui_settings.text_size_sub_bar)
+        self.text = self.font.render("", True, ui_settings.text_color_sub_bar)
         self.time_rect = self.text.get_rect(bottomright=(
             self.window.get_width()/1.15, self.window.get_height()))
         self.moves_rect = self.text.get_rect(midbottom=(
@@ -54,7 +56,7 @@ class KlondikeView:
         self.foundations_cards = pygame.sprite.Group()
 
         self.stack_area = pygame.Rect(
-            KlondikeView.stack_position, KlondikeView.card_size)
+            ui_settings.stack_position, ui_settings.card_size)
 
         # Moving object
         self.grabbed_cards_list = []
@@ -74,7 +76,7 @@ class KlondikeView:
 
             # Set size of cards
             for card in self.game.deck:
-                card.set_image_size(KlondikeView.card_size)
+                card.set_image_size(ui_settings.card_size)
 
             self.game.draw()
             self._initialize_sprites()
@@ -95,20 +97,20 @@ class KlondikeView:
         self.piles_cards.empty()
 
         # Create rects of foundations
-        left_pos, top_pos = KlondikeView.foundation_position
+        left_pos, top_pos = ui_settings.foundation_position
         for foundation in self.game.foundations:
-            foundation.set_rect((left_pos, top_pos), KlondikeView.card_size)
-            left_pos += KlondikeView.foundation_offset
+            foundation.set_rect((left_pos, top_pos), ui_settings.card_size)
+            left_pos += ui_settings.foundation_offset
 
             self.foundations_area.add(foundation)
 
         # Create rects of piles
         # the height of pile is set to the bottom of the window
-        left_pos, top_pos = KlondikeView.pile_position
+        left_pos, top_pos = ui_settings.pile_position
         for pile in self.game.piles:
             pile.set_rect(
-                (left_pos, top_pos), (KlondikeView.card_size[0], self.window.get_height()-top_pos))
-            left_pos += KlondikeView.pile_offset_left
+                (left_pos, top_pos), (ui_settings.card_size[0], self.window.get_height()-top_pos))
+            left_pos += ui_settings.pile_offset_left
 
             self.piles_area.add(pile)
 
@@ -120,13 +122,14 @@ class KlondikeView:
             os.path.join(dirname, "..", r"assets/cards", "back-side.png")
         )
         self.stack_image = pygame.transform.smoothscale(
-            image, KlondikeView.card_size)
+            image, ui_settings.card_size)
         self.stack_rect = pygame.Rect(
-            KlondikeView.stack_position, KlondikeView.card_size)
+            ui_settings.stack_position, ui_settings.card_size)
 
     def _main_loop(self):
         self.click_time = 0
-
+        pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
+        
         while not self.game.game_won():
             if self._handle_events() == False:
                 break
@@ -139,7 +142,7 @@ class KlondikeView:
             if event.type == pygame.QUIT:
                 return False
 
-            if event.type == pygame.MOUSEBUTTONUP:
+            if event.type == pygame.MOUSEBUTTONUP and event.button == 1:
                 if time.time() - self.click_time < 0.5:
                     self.double_clicked = self._clicked_sprite(event.pos, True)
                     if self.double_clicked:
@@ -151,9 +154,6 @@ class KlondikeView:
                 self.grabbed_cards.clear()
                 self.click_time = time.time()
 
-            elif event.type == pygame.MOUSEMOTION and self.grabbed_cards:
-                self.grabbed_cards.move(event.rel)
-
             elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                 if self.stack_area.collidepoint(event.pos):
                     self.game.deal()
@@ -162,6 +162,9 @@ class KlondikeView:
                     card = self._clicked_sprite(event.pos)
                     if card:
                         self.create_grabbed_object(card)
+
+            elif event.type == pygame.MOUSEMOTION and self.grabbed_cards:
+                self.grabbed_cards.move(event.rel)
 
         if self.update_piles_flag:
             self.update_piles()
@@ -180,16 +183,16 @@ class KlondikeView:
 
         # Stack
         if self.game.stack_is_empty():
-            pygame.draw.rect(self.window, KlondikeView.empty_stack_color,
-                             (KlondikeView.stack_position, KlondikeView.card_size), 1)
+            pygame.draw.rect(self.window, ui_settings.empty_stack_color,
+                             (ui_settings.stack_position, ui_settings.card_size), 1)
         else:
             self.window.blit(self.stack_image, self.stack_rect)
 
         # Foundations
         for i, foundation in enumerate(self.game.foundations):
             if foundation.is_empty():
-                pygame.draw.rect(self.window, KlondikeView.empty_foundation_color, ((
-                    KlondikeView.foundation_position[0]+i*KlondikeView.foundation_offset, KlondikeView.foundation_position[1]), KlondikeView.card_size), 1)
+                pygame.draw.rect(self.window, ui_settings.empty_foundation_color, ((
+                    ui_settings.foundation_position[0]+i*ui_settings.foundation_offset, ui_settings.foundation_position[1]), ui_settings.card_size), 1)
 
         self.foundations_cards.draw(self.window)
         self.waste.draw(self.window)
@@ -197,12 +200,12 @@ class KlondikeView:
 
         # Clock
         self.time_text = self.font.render(
-            self._clock.elapsed_time(), True, KlondikeView.font_color)
+            self._clock.elapsed_time(), True, ui_settings.text_color_sub_bar)
         self.window.blit(self.time_text, self.time_rect)
 
         # Moves
         self.moves_text = self.font.render(
-            "Siirrot: " + str(self.moves), True, KlondikeView.font_color)
+            "Siirrot: " + str(self.moves), True, ui_settings.text_color_sub_bar)
         self.window.blit(self.moves_text, self.moves_rect)
 
         pygame.display.update()
@@ -278,7 +281,7 @@ class KlondikeView:
         for i, card in enumerate(self.game.get_waste_top_cards()):
             self.waste.add(card)
             card.set_position(
-                (KlondikeView.waste_position[0]+i*KlondikeView.waste_offset, KlondikeView.waste_position[1]))
+                (ui_settings.waste_position[0]+i*ui_settings.waste_offset, ui_settings.waste_position[1]))
             self.waste.move_to_front(card)
 
         self.waste.update()
@@ -286,13 +289,13 @@ class KlondikeView:
     def update_foundations(self):
         self.foundations_cards.empty()
 
-        left_pos, top_pos = KlondikeView.foundation_position
+        left_pos, top_pos = ui_settings.foundation_position
         for foundation in self.game.foundations:
             for card in self.game.get_foundation_top_cards(foundation):
                 card.set_position((left_pos, top_pos))
                 self.foundations_cards.add(card)
 
-            left_pos += KlondikeView.foundation_offset
+            left_pos += ui_settings.foundation_offset
 
     def update_piles(self):
         # Piles
@@ -301,13 +304,13 @@ class KlondikeView:
 
         self.piles_cards.empty()
 
-        left_pos = KlondikeView.pile_position[0]
+        left_pos = ui_settings.pile_position[0]
         for pile in self.game.piles:
-            top_pos = KlondikeView.pile_position[1]
+            top_pos = ui_settings.pile_position[1]
             for card in pile:
                 card.set_position((left_pos, top_pos))
-                top_pos += KlondikeView.pile_offset_top
+                top_pos += ui_settings.pile_offset_top
                 self.piles_cards.add(card)
-            left_pos += KlondikeView.pile_offset_left
+            left_pos += ui_settings.pile_offset_left
 
         self.piles_cards.update()

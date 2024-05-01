@@ -1,38 +1,33 @@
-import pygame
+
 from ui.start_view import StartView
 from ui.klondike_view import KlondikeView
-from ui.message_view import MessageBox
-from ui.clock import Clock
-
+from ui.message_view import MessageView
+from ui.statistics_view import StatisticsView
+from repositories.game_repository import game_repository
+import pygame
 
 class UI:
     """
     Sovelluksen käyttöliittymästä vastaava luokka.
     """
 
-    def __init__(self, window_size):
+    def __init__(self, window):
 
-        pygame.init()
-        pygame.display.set_caption("Pasianssi")
+        self.window_size = window.get_size()
+        self.window = window
 
-        self.window_size = window_size
-        self._set_window_size()
-
-        clock = Clock()
-
-        self.background_color = (219, 219, 200)
-        self.message_box = MessageBox(self.window)
-        self.start_view = StartView(self.window, self.background_color)
-        self.klondike_view = KlondikeView(
-            self.window, self.background_color, clock)
+        self._message_view = MessageView(window)
+        self._statistics_view = StatisticsView(window)
+        self._start_view = StartView(window, self._statistics_view)
+        self._klondike_view = KlondikeView(window)
 
     def start(self):
-        level = self.start_view._show()
+        level = self._start_view.show()
         if level:
             self._show_klondike_view(level)
 
     def _show_klondike_view(self, level, start_new=True):
-        won = self.klondike_view._play(start_new=start_new, level=level)
+        won = self._klondike_view._play(start_new=start_new, level=level)
         back_to_start = self._show_message_view(won)
         if back_to_start:
             self.start()
@@ -43,10 +38,10 @@ class UI:
                 self._show_klondike_view(level, start_new=True)
 
     def _show_message_view(self, won):
-        self.message_box._set_texts(won)
-        back_to_start = self.message_box._show()
-        self._set_window_size()
+        self._message_view._set_texts(won)
+        back_to_start = self._message_view._show()
+        self._resize_to_original_size()
         return back_to_start
 
-    def _set_window_size(self):
+    def _resize_to_original_size(self):
         self.window = pygame.display.set_mode(self.window_size)

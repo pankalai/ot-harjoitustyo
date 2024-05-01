@@ -1,9 +1,6 @@
 from invoke import task
 
-@task
-def start(ctx):
-    ctx.run("python src/index.py")
-    
+ 
 @task
 def test(ctx):
     ctx.run("pytest src")
@@ -23,4 +20,11 @@ def format(ctx):
 @task(format)
 def lint(ctx):
     ctx.run("pylint src")
+    
+@task
+def build(ctx):
+    ctx.run("python3 src/build.py")
   
+@task
+def start(ctx):
+    ctx.run("python src/index.py")
