@@ -7,6 +7,7 @@ Ohjelman rakenne noudattaa kolmitasoista kerrosarkkitehtuuria, ja koodin rakenne
 ```mermaid
  classDiagram
    ui ..|> services
+   ui ..|> repositories
    services ..|> repositories
    services ..|> entities
 
