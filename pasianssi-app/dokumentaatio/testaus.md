@@ -42,5 +42,5 @@ Kaikki [määrittelydokumentin](./vaatimusmaarittely.md) ja käyttöohjeen lista
 
 Sovellus ei anna tällä hetkellä järkeviä virheilmoituksia, seuraavissa tilanteissa:
 
-- Konfiguraation määrittelemiin tiedostoihin ei ole luku/kirjoitusoikeuksia
+- Konfiguraation määrittelemään tiedostoon ei ole luku-/kirjoitusoikeuksia
 - SQLite tietokantaa ei ole alustettu, eli `python -m poetry run invoke build`-komentoa ei ole suoritettu

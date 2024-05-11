@@ -35,6 +35,7 @@ Tarkempi kuvaus pelin toiminnallisuuksista:
 - Tyhjään pinoon voi siirtää kuninkaan [TEHTY]
 - Kulunut aika näkyy pelin aikana [TEHTY]
 - Siirron jälkeen siirtojen määrä päivittyy näytölle [TEHTY]
+- Pelin läpimenon tai lopettamisen jälkeen tiedot tallentuvat tietokantaan [TEHTY]
 
 
 ## Jatkokehitysideoita
