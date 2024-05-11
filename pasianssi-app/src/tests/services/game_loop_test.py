@@ -27,9 +27,6 @@ class StubClock:
         self.time = "11:11:11"
 
 
-stub_clock = StubClock
-
-
 class StubEvent:
     def __init__(self, event_type, button, pos, rel=(5, 5)):
         self.type = event_type
@@ -53,6 +50,9 @@ class StubGame:
     def draw(self):
         pass
 
+    def double_click_action(self, card):
+        return True
+
     def game_won(self):
         return False
 
@@ -72,9 +72,6 @@ stub_game = StubGame()
 class StubRenderer:
     def __init__(self, game=stub_game):
         self.game = game
-
-    def double_click_action(self, card):
-        return True
 
     def render(self):
         pass
@@ -122,7 +119,7 @@ class TestGameLoop(unittest.TestCase):
             self.game_mock,
             self.renderer_mock,
             StubEventQueue(events),
-            stub_clock()
+            StubClock()
         )
         self.assertEqual(game_loop.get_start_time(), "00:00:00")
         game_loop.start(True)
@@ -135,7 +132,7 @@ class TestGameLoop(unittest.TestCase):
             self.game_mock,
             self.renderer_mock,
             StubEventQueue(events),
-            stub_clock()
+            StubClock()
         )
         game_loop.start(True)
         self.renderer_mock.collide_stack.assert_called()
@@ -149,7 +146,7 @@ class TestGameLoop(unittest.TestCase):
             self.game_mock,
             self.renderer_mock,
             StubEventQueue(events),
-            stub_clock()
+            StubClock()
         )
         game_loop.start(True)
         self.renderer_mock.get_top_card_at_position.assert_called_with((1, 1))
@@ -165,7 +162,7 @@ class TestGameLoop(unittest.TestCase):
             self.game_mock,
             self.renderer_mock,
             StubEventQueue(events),
-            stub_clock()
+            StubClock()
         )
         game_loop.start(True)
         self.renderer_mock.get_top_card_at_position.assert_called_with((1, 1))
@@ -181,7 +178,7 @@ class TestGameLoop(unittest.TestCase):
             self.game_mock,
             self.renderer_mock,
             StubEventQueue(events),
-            stub_clock()
+            StubClock()
         )
         game_loop.start(True)
         self.renderer_mock.get_top_card_at_position.assert_called_with((2, 1))
@@ -198,7 +195,7 @@ class TestGameLoop(unittest.TestCase):
             self.game_mock,
             self.renderer_mock,
             StubEventQueue(events),
-            stub_clock(1000)
+            StubClock(1000)
         )
         game_loop.start(True)
         self.renderer_mock.get_top_card_at_position.assert_called_with((1, 1))
