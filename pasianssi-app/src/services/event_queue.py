@@ -12,6 +12,3 @@ class EventQueue:
            Tapahtumat listana.
         """
         return pygame.event.get()
-
-
-event_queue = EventQueue()

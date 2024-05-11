@@ -31,7 +31,7 @@ class Renderer:
         self._infobar.update_info(time, moves)
 
     def _update(self):
-        """Päivittää näkymän
+        """Piirtää alapalkin ja päivittää näkymän
         """
         self._infobar.draw(self._window)
         pygame.display.update()
@@ -263,7 +263,6 @@ class GameRenderer(Renderer):
         niin piirretään kuvapuoli alaspäin oleva kortti. Muussa tapauksessa
         piirretään suorakulmio merkitsemään käsipakan paikkaa.
         """
-        # Stack
         if self._game.stack_is_empty():
             pygame.draw.rect(self._window, self.ui_settings.empty_stack_color,
                              (self.ui_settings.stack_position, self.ui_settings.card_size), 1)
@@ -273,7 +272,6 @@ class GameRenderer(Renderer):
     def _draw_foundations(self):
         """Piirtää peruspakoissa olevat kortit.
         """
-        # Foundations
         for i, foundation in enumerate(self._game.foundations):
             if foundation.is_empty():
                 pygame.draw.rect(
