@@ -18,12 +18,17 @@ Sovelluksessa voi pelata Klondike-pasianssia, jossa tavoitteena on saada pinottu
 ## Asennus
 
 Mene pasianssi-app hakemistoon.
-1. Asenna riippuvuudet komennolla:
+1. Asenna riippuvuudet komennolla
 ```
 poetry install
 ```
 
-2. Käynnistä sovellus komennolla:
+2. Suorita alustustoimenpiteet komennolla
+```
+poetry run invoke build
+```
+
+2. Käynnistä sovellus komennolla
 ```
 poetry run invoke start
 ```
