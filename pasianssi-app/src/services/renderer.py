@@ -67,15 +67,6 @@ class GameRenderer(Renderer):
         self._layered_cards = pygame.sprite.LayeredUpdates()
         self._rects_to_collide = pygame.sprite.Group()
 
-    @property
-    def double_click_action(self):
-        """Palauttaa tiedon siitä, mikä metodi liittyy tuplaklikkaus-tapahtumaan.
-
-        Returns:
-            Luokan metodi.
-        """
-        return self._game.add_to_group
-
     def set_cards_size(self):
         """Asettaa korttien koon
         """

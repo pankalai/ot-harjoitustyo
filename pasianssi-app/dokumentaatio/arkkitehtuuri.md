@@ -50,7 +50,7 @@ Käyttöliittymä sisältää neljä erilaista näkymää:
 	
 Näkymät on toteutettu omina luokkinaan. Yksi näkymistä on kerrallaan näkyvissä. UI-luokka vastaa aloitusnäkymän ja viestinäkymän näyttämisestä. Viestinäkymään siirrytään, kun peli päättyy tai kun pelaaja haluaa lopettaa pelin, ja sen tarkoitus on varmistaa käyttäjän tekemät valinnat. Tilastonäkymään siirrytään suoraan aloitusnäkymästä. Pelisilmukka vastaa pelinäkymän näyttämisestä sille injektoidun näytön piirtäjän kautta. 
 
-Käyttöliittymä on eristetty sovelluslogiikasta ja niin ikään käyttöliittymän ulkoasun asetukset on eriytetty näkymistä. Ne on määritelty erillisessä tiedossa. Pelinäkymän pelikohtaiset ulkoasuasetukset injektoidaan näytön piirtämisestä vastaavalla luokalle konstruktorikutsun yhteydessä.
+Käyttöliittymä on eristetty sovelluslogiikasta ja niin ikään käyttöliittymän ulkoasun asetukset on eriytetty näkymistä. Ne on määritelty erillisessä tiedossa. Pelinäkymän pelikohtaiset ulkoasuasetukset injektoidaan näytön piirtämisestä vastaavalle luokalle konstruktorikutsun yhteydessä. Tilastonäkymä hakee pelien tiedot repository-luokkaa hyödyntäen.
 
 
 ## Sovelluslogiikka
