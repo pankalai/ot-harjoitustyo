@@ -6,15 +6,15 @@ Ohjelmaa on testattu sekä automatisoiduin yksikkö- ja integraatiotestein unitt
 
 ### Sovelluslogiikka
 
-Pelisilmukasta vastaavaa `GameLoop`-luokkaa testataan [TestGameLoop](https://github.com/pankalai/ot-harjoitustyo/blob/main/src/tests/services/game_loop_test.py)-testiluokalla. `GameLoop`-olio alustetaan niin, että sille injektoidaan riippuvuuksiksi game-, renderer-, eventqueue- ja clock-luokat. Tätä varten testissä on käytössä luokat `StubGame`, `StubRenderer`,`StubEventQueue` ja `StubClock`. Testeissä on käytetty hyväksi myös Mock-luokkaa varmistamaan, että oikeita metodeja kutsutaan oikeilla parametreilla. Mock-olio on toteutettu `StubGame`- ja `StubRenderer`-olioille.
+Pelisilmukasta vastaavaa `GameLoop`-luokkaa testataan [TestGameLoop](https://github.com/pankalai/ot-harjoitustyo/blob/main/pasianssi-app/src/tests/services/game_loop_test.py)-testiluokalla. `GameLoop`-olio alustetaan niin, että sille injektoidaan riippuvuuksiksi game-, renderer-, eventqueue- ja clock-luokat. Tätä varten testissä on käytössä luokat `StubGame`, `StubRenderer`,`StubEventQueue` ja `StubClock`. Testeissä on käytetty hyväksi myös Mock-luokkaa varmistamaan, että oikeita metodeja kutsutaan oikeilla parametreilla. Mock-olio on toteutettu `StubGame`- ja `StubRenderer`-olioille.
 
-Klondike-pelistä vastaavaa `Klondike`-luokkaa testataan [TestKlondike](https://github.com/pankalai/ot-harjoitustyo/blob/main/src/tests/services/klondike_test.py)-testiluokalla. 
+Klondike-pelistä vastaavaa `Klondike`-luokkaa testataan [TestKlondike](https://github.com/pankalai/ot-harjoitustyo/blob/main/pasianssi-app/src/tests/services/klondike_test.py)-testiluokalla. 
 
-Korttiryhmien hallinnasta vastaavaa `GroupHandler`-luokkaa testataan [TestGroupHandler](https://github.com/pankalai/ot-harjoitustyo/blob/main/src/tests/services/group_handler_test.py)-testiluokalla. Osittain sitä testataan myös `Klondike`-luokan testien yhteydessä. 
+Korttiryhmien hallinnasta vastaavaa `GroupHandler`-luokkaa testataan [TestGroupHandler](https://github.com/pankalai/ot-harjoitustyo/blob/main/pasianssi-app/src/tests/services/group_handler_test.py)-testiluokalla. Osittain sitä testataan myös `Klondike`-luokan testien yhteydessä. 
 
 ### Repositorio-luokka
 
-Repositorio-luokkaa `GameRepository` testataan testeissä käytössäolevalla tietokannalla. Testitietokannan nimi on konfiguroitu _.env.test_-tiedostoon. `GameRepository`-luokkaa testataan [TestGameRepository](https://github.com/pankalai/ot-harjoitustyo/blob/main/src/tests/repositories/game_repository_test.py)-testiluokalla.
+Repositorio-luokkaa `GameRepository` testataan testeissä käytössäolevalla tietokannalla. Testitietokannan nimi on konfiguroitu _.env.test_-tiedostoon. `GameRepository`-luokkaa testataan [TestGameRepository](https://github.com/pankalai/ot-harjoitustyo/blob/main/pasianssi-app/src/tests/repositories/game_repository_test.py)-testiluokalla.
 
 ### Testauskattavuus
 
