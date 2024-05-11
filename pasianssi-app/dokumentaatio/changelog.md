@@ -26,3 +26,11 @@
 - Lisätty Element-luokka, joka toimii yliluokkana käyttöliittymän objekteille, esimerkiksi painikkeille ja tekstikentälle
 - Pelaaja voi antaa nimimerkin
 - Pelaaja näkee tehtyjen siirtojen määrän ja pelikellon
+
+## Viikkot 7
+- Lisätty GameService-luokka, joka huolehtii pelisilmukan käynnistämisestä ja tietojen tallentamisesta tietokantaan.
+- Lisätty GameLoop-luokka pelisilmukalle.
+- Lisätty Eventqueue-luokka pygamen tapahtumajonon palauttamiseen.
+- Lisätty Clock-luokka, joka vastaa aikaan liittyvistä toiminnoista.
+- Lisätty Renderer-luokka, joka piirtää pelin näkymän.
+- Pelaaja näkee kaikkien pelaajien parhaat tulokset.

@@ -1,18 +1,18 @@
-from ui.ui import UI
-from services.clock import Clock
-from services.game_loop import GameLoop
 import pygame
+from ui.ui_settings import ui_settings
 
-window_size = (750, 500)
 
 def main():
 
-    pygame.init()
     pygame.display.set_caption("Pasianssi")
-    window = pygame.display.set_mode(window_size)
-    
-    game = UI(window)
-    game.start()
+    window = pygame.display.set_mode(ui_settings.window_size)
+    pygame.init()
+
+    # pygame init ennen importtia
+    from ui.ui import UI
+
+    ui = UI(window)
+    ui.show()
 
 
 if __name__ == "__main__":

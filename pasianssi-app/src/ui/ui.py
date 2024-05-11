@@ -1,47 +1,73 @@
 
 from ui.start_view import StartView
-from ui.klondike_view import KlondikeView
 from ui.message_view import MessageView
 from ui.statistics_view import StatisticsView
-from repositories.game_repository import game_repository
+from ui.ui_settings import ui_settings
+from services.game_service import GameService
+from services.game_loop import GameLoop
+from services.renderer import GameRenderer
 import pygame
+
 
 class UI:
     """
     Sovelluksen käyttöliittymästä vastaava luokka.
     """
 
-    def __init__(self, window):
+    def __init__(self, window, message_view=MessageView(), statistics_view=StatisticsView()):
+        self._window = window
 
-        self.window_size = window.get_size()
-        self.window = window
+        self._message_view = message_view
+        self._statistics_view = statistics_view
+        self._start_view = StartView(self._statistics_view)
 
-        self._message_view = MessageView(window)
-        self._statistics_view = StatisticsView(window)
-        self._start_view = StartView(window, self._statistics_view)
-        self._klondike_view = KlondikeView(window)
+        self._game_service = None
 
-    def start(self):
-        level = self._start_view.show()
-        if level:
-            self._show_klondike_view(level)
+    def show(self):
+        """Näyttää alkunäkymän
+        """
+        game = self._start_view.show(self._window)
+        if game:
+            self._start_game(game)
 
-    def _show_klondike_view(self, level, start_new=True):
-        won = self._klondike_view._play(start_new=start_new, level=level)
+    def _start_game(self, game, start_new=True):
+        """Käynnistää pelin.
+
+        Args:
+            game: Peli, joka käynnistetään.
+            start_new (bool, optional): Aloitetaanko kokonaan uusi peli vai jatketaan jo aloitettua.
+        """
+        if start_new or not self._game_service:
+            self._game_service = GameService(
+                game,
+                self._start_view.get_player_name(),
+                GameLoop(game, GameRenderer(self._window))
+            )
+        self._game_service.play(start_new)
+        won = self._game_service.game_won
         back_to_start = self._show_message_view(won)
         if back_to_start:
-            self.start()
+            self.show()
         else:
             if not won:
-                self._show_klondike_view(level, start_new=False)
+                self._start_game(game, start_new=False)
             else:
-                self._show_klondike_view(level, start_new=True)
+                self._start_game(game, start_new=True)
 
-    def _show_message_view(self, won):
-        self._message_view._set_texts(won)
-        back_to_start = self._message_view._show()
+    def _show_message_view(self, won: bool):
+        """Näyttää viestinäkymän.
+
+        Args:
+            won (bool): Onko peli mennyt läpi vai ei.
+
+        Returns:
+            True, jos palataan alkuun, muuten False.
+        """
+        back_to_start = self._message_view.show(self._window, won)
         self._resize_to_original_size()
         return back_to_start
 
     def _resize_to_original_size(self):
-        self.window = pygame.display.set_mode(self.window_size)
+        """Asettaa ikkunan koon alkuperäiseksi.
+        """
+        self._window = pygame.display.set_mode(ui_settings.window_size)

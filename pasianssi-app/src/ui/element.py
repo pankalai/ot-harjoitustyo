@@ -1,52 +1,65 @@
 import pygame
+from ui.ui_settings import ui_settings
 
 
 class Element:
-    text_color = (5, 5, 5)
+    """Näkymän elementtien pääluokka.
+    """
 
-    background_color = (219, 219, 219)
-    text_size = 22
-    border_size = 1
+    def __init__(self, position=None, size=None, text="", text_size=None, text_color=None):
+        self._position = position
 
-    def __init__(self, window, position = None, size = None, text = "", text_size = None, text_color = None) -> None:
-        self.window = window
-        self.position = position
+        self._text = text
+        self._text_color = text_color if text_color else ui_settings.text_color_element
+        self._text_size = text_size if text_size else ui_settings.text_size_element
 
-        self.text = text
-        self.text_color = text_color if text_color else Element.text_color
-        self.text_size = text_size if text_size else Element.text_size
+        self._font = pygame.font.Font(None, self._text_size)
+        self._text_font = self._font.render(self._text, True, self._text_color)
 
-        self.font = pygame.font.Font(None, self.text_size)
-        self.text_font = self.font.render(self.text, True, self.text_color)
-        
-        self.size = size if size else (self.text_font.get_rect().width,self.text_font.get_rect().height) 
+        self._size = size if size else (
+            self._text_font.get_rect().width, self._text_font.get_rect().height)
 
-        self.field = pygame.Surface(self.size).convert()
-        self.rect = self.field.get_rect(
-            center=(self.position[0], self.position[1]))
+        self._field = pygame.Surface(self._size).convert()
 
-    def draw(self):
-        self.window.blit(self.text_font, self.rect)
+        if self._position:
+            self._set_rect()
 
     def set_text(self, text):
-        self.text_font = self.font.render(text, True, self.text_color)
+        self._text_font = self._font.render(text, True, self._text_color)
+
+    def get_text(self):
+        return self._text
 
     def set_underline(self):
-        self.font.set_underline(True)
-        self.text_font = self.font.render(
-            self.text, True, self.text_color)
+        self._font.set_underline(True)
+        self._text_font = self._font.render(
+            self._text, True, self._text_color)
+
+    def set_position(self, position):
+        self._position = position
+        self._set_rect()
 
     def get_position(self):
-        return self.position
-    
-    def draw_border(self):
-        border_size = Element.border_size
+        return self._position
+
+    def get_size(self):
+        return self._size
+
+    def draw(self, window):
+        window.blit(self._text_font, self.rect)
+
+    def _set_rect(self):
+        self.rect = self._field.get_rect(
+            center=(self._position[0], self._position[1]))
+
+    def _draw_border(self, window):
+        border_size = ui_settings.border_size
         left = self.rect.x - border_size
         top = self.rect.y - border_size
         width = self.rect.width + border_size * 2
         height = self.rect.height + border_size * 2
 
-        pygame.draw.rect(self.window, self.border_color,
+        pygame.draw.rect(window, self._border_color,
                          (left, top, width, height), border_size)
 
     def touch(self, pos):
@@ -54,76 +67,110 @@ class Element:
 
 
 class Button(Element):
-    border_color = (55, 155, 55)
+    """Painikkeista vastaava luokka.
 
-    def __init__(self, window, text, position, size, fill_color, text_color, text_size):
-        super(Button, self).__init__(window, position, size, text, text_size, text_color)
+    Args:
+        Perii Element-luokan.
+    """
 
-        self.button = pygame.Surface(size).convert()
-        self.button.fill(fill_color)
+    def __init__(self, text, position, size, fill_color, text_color, text_size):
+        super(Button, self).__init__(
+            position, size, text, text_size, text_color)
 
-        self.border_color = Button.border_color
+        self._border_color = ui_settings.border_color_button
+        self.fill_color = fill_color
 
-        self.rect = pygame.Rect(self.position, self.size)
-        self.set_text(self.text)
+    def draw(self, window):
+        self.rect = pygame.Rect(self._position, self._size)
+        self._field.fill(self.fill_color)
+        text_rect = self._text_font.get_rect(
+            center=(self._field.get_width()/2, self._field.get_height()/2))
+        self._field.blit(self._text_font, text_rect)
+        window.blit(self._field, (self.rect.x, self.rect.y))
 
-    def draw(self):
-        text_rect = self.text_font.get_rect(
-            center=(self.button.get_width()/2, self.button.get_height()/2))
-        self.button.blit(self.text_font, text_rect)
-        self.window.blit(self.button, (self.rect.x, self.rect.y))
-
-        self.draw_border()
+        self._draw_border(window)
 
 
 class InputField(Element):
-    border_color = (100, 100, 100)
-    font_size = 15
+    """Syöttökentistä vastaava luokka.
 
-    def __init__(self, window, position, size):
-        super(InputField, self).__init__(window, position, size, "", InputField.font_size)
+    Args:
+        Element (_type_): _description_
+    """
 
-        self.active = False
-        self.border_color = InputField.border_color
+    def __init__(self, position, size):
+        super(InputField, self).__init__(
+            position, size, "", ui_settings.input_text_size)
 
-    def draw(self):
-        self.field.fill(InputField.background_color)
+        self._active = False
+        self._border_color = ui_settings.border_color_input_field
 
-        text = self.text
+    def activate(self, window):
+        self._active = True
+        self.draw(window)
+
+    def is_active(self):
+        return self._active
+
+    def passivate(self, window):
+        self._active = False
+        self.draw(window)
+
+    def add_char(self, char, window):
+        if len(self._text) < 20:
+            self._text += char
+            self.draw(window)
+
+    def remove_char(self, window):
+        if self._text:
+            self._text = self._text[:-1]
+        self.draw(window)
+
+    def draw(self, window):
+        self._field.fill(ui_settings.input_field_background)
+
+        text = self._text
         if self.is_active():
             text = text + "|"
 
         # Text
         if text:
-            font = pygame.font.Font(
-                pygame.font.get_default_font(), self.text_size)
-            text_font = font.render(text, True, self.text_color)
+            text_font = self._font.render(text, True, self._text_color)
 
             text_rect = text_font.get_rect(
-                midleft=(5, self.field.get_height()/2))
-            self.field.blit(text_font, text_rect)
+                midleft=(5, self._field.get_height()/2))
+            self._field.blit(text_font, text_rect)
 
-        self.window.blit(self.field, (self.rect.x, self.rect.y))
+        window.blit(self._field, (self.rect.x, self.rect.y))
 
-        self.draw_border()
+        self._draw_border(window)
 
-    def activate(self):
-        self.active = True
-        self.draw()
 
-    def is_active(self):
-        return self.active
+class InfoBar:
+    """Tietopalkista vastaava luokka.
+    """
 
-    def passivate(self):
-        self.active = False
-        self.draw()
+    def __init__(self):
+        self._font = pygame.font.Font(
+            pygame.font.get_default_font(), ui_settings.text_size_sub_bar)
+        self._text_color = ui_settings.text_color_sub_bar
 
-    def add_char(self, char):
-        if len(self.text) < 20:
-            self.text += char
-            self.draw()
+        self._set_rects()
 
-    def remove_char(self):
-        if self.text:
-            self.text = self.text[:-1]
-        self.draw()
+    def _set_rects(self):
+        surface = pygame.Surface((20, 20)).convert()
+        self.time_rect = surface.get_rect(bottomright=(
+            ui_settings.window_size[0]/1.15, ui_settings.window_size[1]))
+        self.moves_rect = surface.get_rect(midbottom=(
+            ui_settings.window_size[0]/2, ui_settings.window_size[1]))
+
+    def update_info(self, time, moves):
+        self._time = time
+        self._moves = moves
+
+    def draw(self, window):
+        time_text = self._font.render(self._time, True, self._text_color)
+        moves_text = self._font.render(
+            "Siirrot: " + str(self._moves), True, self._text_color)
+        window.blit(time_text, self.time_rect)
+        window.blit(moves_text, self.moves_rect)

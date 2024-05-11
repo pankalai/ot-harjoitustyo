@@ -1,117 +1,151 @@
+import pygame
 from repositories.game_repository import game_repository
 from ui.element import Element, Button
-from datetime import datetime
-import ui_settings
-import pygame
+from ui.ui_settings import ui_settings
+from services.clock import time_diff_in_hours_minutes_seconds, string_to_datetime
 
-def row_offset(start,offset):
-    return start[0]+offset[0], start[1]+offset[1]
-
-def string_to_datetime(string):
-    return datetime.strptime(string, "%Y-%m-%d %H:%M:%S")
-
-def time_diff_in_hours_minutes_seconds(datetime1, datetime2):
-    dt1 = datetime.timestamp(datetime1)
-    dt2 = datetime.timestamp(datetime2)
-
-    dt1 = datetime.fromtimestamp(dt1)
-    dt2 = datetime.fromtimestamp(dt2)
-
-    return str(dt2 - dt1)
-    
 
 class StatisticsView:
-    # button_size = (100, 40)
-    # button_color = (114, 214, 114)
+    """Pelattujen pelien tilastojen näyttämisestä vastaava luokka.
+    """
 
-    # link_color = (15, 35, 50)
-    # text_color = (59, 19, 19)
-
-    # header_font_size = 44
-    # sub_header_font_size = 28
-    # button_font_size = 24
-    # text_font_size = 18
-
-    def __init__(self, window):
-        self.window = window
-        self.width, self.height = window.get_size()
+    def __init__(self):
         self.background_color = ui_settings.background_color
 
-        self.top_by_time1 = game_repository.find_top_plays_by_time("klondike",1)
-        self.top_by_moves1 = game_repository.find_top_plays_by_moves("klondike",1)
-
-        self.top_by_time3 = game_repository.find_top_plays_by_time("klondike",3)
-        self.top_by_moves3 = game_repository.find_top_plays_by_moves("klondike",3)
-
-        self.header_text = Element(
-            self.window,
-            (self.width/2, 50),
+        self._header_text = Element(
+            None,
             None,
             "Parhaat tulokset",
             ui_settings.text_size_header,
             ui_settings.text_color
         )
 
-        # Column 1
-        self.start_pos1 = 100,110
-        self.header1 = Element(self.window, self.start_pos1, None, "Helppo", ui_settings.text_size_sub_header, ui_settings.text_color)
-        self.sub_header1_1 = Element(self.window, row_offset(self.start_pos1,(125,15)), None, "Aika", ui_settings.text_size_medium, ui_settings.text_color)
-        self.sub_header1_1.set_underline()
-        self.sub_header1_2 = Element(self.window, row_offset(self.start_pos1,(325,15)), None, "Siirrot", ui_settings.text_size_medium, ui_settings.text_color)
-        self.sub_header1_2.set_underline()
+        # Sarake 1 (helpot)
+        self._header1 = Element(None, None, "HELPPO",
+                                ui_settings.text_size_sub_header, ui_settings.text_color)
+        self._sub_header1_1 = Element(
+            None, None, "Aika", ui_settings.text_size_medium, ui_settings.text_color)
+        self._sub_header1_1.set_underline()
+        self._sub_header1_2 = Element(
+            None, None, "Siirrot", ui_settings.text_size_medium, ui_settings.text_color)
+        self._sub_header1_2.set_underline()
 
-        # Column 2
-        self.start_pos2 = 100,275
-        self.header2 = Element(self.window, self.start_pos2, None, "Vaikea", ui_settings.text_size_sub_header, ui_settings.text_color)
-        self.sub_header2_1 = Element(self.window, row_offset(self.start_pos2,(125,15)), None, "Aika", ui_settings.text_size_medium, ui_settings.text_color)
-        self.sub_header2_1.set_underline()
-        self.sub_header2_2 = Element(self.window, row_offset(self.start_pos2,(325,15)), None, "Siirrot", ui_settings.text_size_medium, ui_settings.text_color)
-        self.sub_header2_2.set_underline()
+        # Sarake 2 (vaikeat)
+        self._header2 = Element(None, None, "VAIKEA",
+                                ui_settings.text_size_sub_header, ui_settings.text_color)
+        self._sub_header2_1 = Element(
+            None, None, "Aika", ui_settings.text_size_medium, ui_settings.text_color)
+        self._sub_header2_1.set_underline()
+        self._sub_header2_2 = Element(
+            None, None, "Siirrot", ui_settings.text_size_medium, ui_settings.text_color)
+        self._sub_header2_2.set_underline()
 
-        self.sub_headers = [self.header1, self.sub_header1_1, self.sub_header1_2, self.header2, self.sub_header2_1, self.sub_header2_2]
+        self._sub_headers = [self._header1, self._sub_header1_1, self._sub_header1_2,
+                             self._header2, self._sub_header2_1, self._sub_header2_2]
 
-        self.button_back = Button(self.window, "Takaisin", (
-            self.width/2-ui_settings.button_size_big[0]/2, self.height-ui_settings.button_size_big[1]*1.25), ui_settings.button_size_big, ui_settings.button_color, ui_settings.link_color, ui_settings.text_size_big)
-    
-    def draw_table(self):
-        offset = 20, 75
+        self._button_back = Button("Takaisin", None, ui_settings.button_size_big,
+                                   ui_settings.button_color, ui_settings.link_color, ui_settings.text_size_big)
+
+    def _set_positions(self, window):
+        """Asettaa näkymän elementtien sijainnit.
+
+        Args:
+            window : Ikkuna, johon elementit piirretään.
+        """
+        width, height = window.get_size()
+        self._header_text.set_position((width/2, 50))
+
+        start_pos1 = width/7.5, height/4.5
+        self._header1.set_position(start_pos1)
+        self._sub_header1_1.set_position(row_offset(start_pos1, (125, 15)))
+        self._sub_header1_2.set_position(row_offset(start_pos1, (325, 15)))
+
+        start_pos2 = width/7.5, height/1.85
+        self._header2.set_position(start_pos2)
+        self._sub_header2_1.set_position(row_offset(start_pos2, (125, 15)))
+        self._sub_header2_2.set_position(row_offset(start_pos2, (325, 15)))
+
+        self._button_back.set_position(
+            (width/2-ui_settings.button_size_big[0]/2,
+             height-ui_settings.button_size_big[1]*1.25)
+        )
+
+    def _get_data(self):
+        """Hakee datan.
+        """
+        self.top_by_time1 = game_repository.get_top_played_games_by_time(
+            "Klondike", 1)
+        self.top_by_moves1 = game_repository.get_top_played_games_by_moves(
+            "Klondike", 1)
+        self.top_by_time3 = game_repository.get_top_played_games_by_time(
+            "Klondike", 3)
+        self.top_by_moves3 = game_repository.get_top_played_games_by_moves(
+            "Klondike", 3)
+
+    def _draw_table(self, window):
+        """Piirtää tilastodatan taulukkoon
+
+        Args:
+            window: Ikkuna, johon piirretään.
+        """
+        offset = 20, 90
 
         # By time
-        lists = [self.top_by_time1,self.top_by_time3]
-        for i,header in enumerate([self.sub_header1_1, self.sub_header2_1]):
-            left, top = row_offset(header.get_position(),(0,25))
+        lists = [self.top_by_time1, self.top_by_time3]
+        for i, header in enumerate([self._sub_header1_1, self._sub_header2_1]):
+            left, top = row_offset(header.get_position(), (0, 25))
             for row in lists[i]:
-                elem1 = Element(self.window,(left,top),None,row["username"],ui_settings.text_size_medium,ui_settings.text_color)
-                elem1.draw()
-                elem2 = Element(self.window,(left+offset[1],top),None, time_diff_in_hours_minutes_seconds(string_to_datetime(row["start_time"]), string_to_datetime(row["end_time"])),ui_settings.text_size_medium,ui_settings.text_color)
-                elem2.draw()
-                top += offset[0]
-            
-        # By moves
-        lists = [self.top_by_moves1,self.top_by_moves3]
-        for i,header in enumerate([self.sub_header1_2, self.sub_header2_2]):
-            left, top = row_offset(header.get_position(),(0,25))
-            for row in lists[i]:
-                elem1 = Element(self.window,(left,top),None,row["username"],ui_settings.text_size_medium,ui_settings.text_color)
-                elem1.draw()
-                elem2 = Element(self.window,(left+offset[1],top),None,str(row["moves"]),ui_settings.text_size_medium,ui_settings.text_color)
-                elem2.draw()
+                elem1 = Element(
+                    (left, top), None, row["username"], ui_settings.text_size_medium, ui_settings.text_color)
+                elem1.draw(window)
+                elem2 = Element((left+offset[1], top), None, time_diff_in_hours_minutes_seconds(string_to_datetime(
+                    row["start_time"]), string_to_datetime(row["end_time"])), ui_settings.text_size_medium, ui_settings.text_color)
+                elem2.draw(window)
                 top += offset[0]
 
-    def show(self):
-        self.window.fill(self.background_color)
+        # By moves
+        lists = [self.top_by_moves1, self.top_by_moves3]
+        for i, header in enumerate([self._sub_header1_2, self._sub_header2_2]):
+            left, top = row_offset(header.get_position(), (0, 25))
+            for row in lists[i]:
+                elem1 = Element(
+                    (left, top), None, row["username"], ui_settings.text_size_medium, ui_settings.text_color)
+                elem1.draw(window)
+                elem2 = Element((left+offset[1], top), None, str(row["moves"]),
+                                ui_settings.text_size_medium, ui_settings.text_color)
+                elem2.draw(window)
+                top += offset[0]
+
+    def _draw(self, window):
+        """Piirtää näkymän.
+
+        Args:
+            window: Ikkuna, johon piirretään.
+        """
+        window.fill(self.background_color)
 
         # Headers
-        self.header_text.draw()
+        self._header_text.draw(window)
 
-        for header in self.sub_headers:
-            header.draw()
+        for header in self._sub_headers:
+            header.draw(window)
 
         # Tables
-        self.draw_table()
+        self._draw_table(window)
 
         # Button
-        self.button_back.draw()
+        self._button_back.draw(window)
+
+    def show(self, window):
+        """Vastaa näkymän näyttämisestä. Käsittelee tapahtumat.
+
+        Args:
+            window: Ikkuna, johon piirretään.
+        """
+        self._get_data()
+        self._set_positions(window)
+
+        self._draw(window)
 
         pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
         pygame.display.update()
@@ -123,11 +157,15 @@ class StatisticsView:
                     running = False
 
                 if event.type == pygame.MOUSEBUTTONUP:
-                    if self.button_back.touch(event.pos):
+                    if self._button_back.touch(event.pos):
                         running = False
 
                 elif event.type == pygame.MOUSEMOTION:
-                    if self.button_back.touch(event.pos):
+                    if self._button_back.touch(event.pos):
                         pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
                     else:
                         pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
+
+
+def row_offset(start, offset):
+    return start[0]+offset[0], start[1]+offset[1]

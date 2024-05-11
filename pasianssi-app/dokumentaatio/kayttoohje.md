@@ -5,29 +5,42 @@ Lataa projektin viimeisimmän [releasen](https://github.com/pankalai/ot-harjoitu
 
 ## Ohjelman käynnistäminen
 
-Ennen ohjelman käynnistämistä, asenna riippuvuudet komennolla:
+Riippuvuudet asennetaan komennolla:
 
 ```bash
 poetry install
 ```
 
-Ohjelman voi käynnistää komennolla:
+Alustustoimenpiteet suoritetaan komennolla
+```bash
+poetry run invoke build
+```
+
+Ohjelma käynnistyy komennolla:
 
 ```
 poetry run invoke start
 ```
 
-## Nimimerkin antaminen
+## Nimimerkin antaminen ja vaikeustason valinta
 
-Anna nimimerkki, jolla haluat pelin tietojen tallentuvan tietokantaan.
+Sovellus avautuu näkymään, jossa voi antaa nimimerkin ja valita joko helpon tai vaikean tason. Tilastoja parhaiten pelatuista peleistä voi katsoa klikkaamalla "Katso tilastoja".
 
-## Pelin aloittaminen
+![](./kuvat/aloitusnakyma.png)
 
-Aloita peli valitsemalla vaikeustaso.
+
+## Pelaaminen
+
+Pelin  tarkoituksena on järjestää kortit maittain suuruusjärjestykseen neljään peruspakkaan, jotka ovat pelin alussa tyhjiä. Vasemman reunan käsipakasta voi kääntää kortteja klikkaamalla pakan kuvaa. Kääntyvien korttien määrä riippuu pelin vaikeustasosta. Ainoastaan päällimmäisen kortin voi siirtää joko johonkin pinoon tai suoraan peruspakkaan. Kortteja voi siirtää myös pinosta toiseen tai peruspakasta takaisin pinoon. Kortin voi siirtää peruspakkaan tuplaklikkaamalla. Peli päättyy, kun kaikki kortit ovat peruspakoissa.
+
+![](./kuvat/pelinakyma.png)
 
 ## Pelin lopettaminen
 
-Lopeta peli painamalla oikean yläkulman ruksia ja valitsemalla avautuvassa näkymässä "Palaa alkuun". 
+Pelin voi lopettaa painamalla oikean yläkulman ruksia ja valitsemalla "Palaa alkuun". 
+
+![](./kuvat/viestinakyma.png)
 
 ## Ohjelman sulkeminen
-Poistu ohjelmasta painamalla aloitusnäkymässä oikean yläkulman ruksia.
+
+Ohjelmasta poistutaan painamalla aloitusnäkymässä oikean yläkulman ruksia.

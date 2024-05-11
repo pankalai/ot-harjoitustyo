@@ -3,104 +3,141 @@ from entities.card import Card
 
 
 class CardGroup(pygame.sprite.Sprite):
-    """Luokka jonka avulla hallitaan korttiryhmää
+    """Luokka jonka avulla hallitaan korttiryhmää.
 
     Args:
-        Perii pygamen sprite-luokan
+        Perii pygamen sprite-luokan.
     """
 
     def __init__(self):
         """ Luokan konstruktori, joka luo uuden korttiryhmän.
         """
         super().__init__()
-        self.cards = []
+        self._cards = []
         self.rect = None
-        self.n_cards = None
+        self._n_cards = None
 
-    def clear(self):
-        """Tyhjentää korttiryhmän
+    def as_list(self):
+        """Palauttaa korttiryhmän listana.
+
+        Returns:
+            Lista kortteja.
         """
-        self.cards.clear()
+        return self._cards
 
-    def set_rect(self, pos: tuple, size: tuple):
-        """Asettaa korttiryhmän suorakulmaiset koordinaatit
+    def bottom_card(self):
+        """Palauttaa korttiryhmän alimman kortin.
+
+        Returns:
+            Card-luokan olio, jos korttiryhmässä on kortteja, muuten None.
+        """
+        if self._cards:
+            return self._cards[0]
+        return None
+
+    def card_index(self, card: Card):
+        """Palauttaa kortin indeksin ryhmässä.
 
         Args:
-            pos (_type_): sijainti tuplena (vasen,ylä)
-            size (_type_): koko tuplena (leveys, korkeus)
+            card (Card): Haettava kortti.
+
+        Returns:
+            Kortin indeksi.
+        """
+        return self._cards.index(card)
+
+    def clear(self):
+        """Tyhjentää korttiryhmän.
+        """
+        self._cards.clear()
+
+    def set_rect(self, pos: tuple, size: tuple):
+        """Asettaa korttiryhmän suorakulmaiset koordinaatit.
+
+        Args:
+            pos (tuple): Sijainti (vasen, ylä).
+            size (tuple): Koko (leveys, korkeus).
         """
         self.rect = pygame.Rect(pos, size)
 
-    def reverse(self):
-        """Kääntää korttien järjestyksen
+    def get_position(self):
+        """Palauttaa korttiryhmän sijainnin.
+
+        Returns:
+            Korttiryhmän x- ja y-koordinaatti.
         """
-        self.cards.reverse()
+        return self.rect.x, self.rect.y
+
+    def reverse(self):
+        """Kääntää korttien järjestyksen.
+        """
+        self._cards.reverse()
 
     def is_empty(self):
-        """Palauttaa tiedon, onko korttiryhmä tyhjä
+        """Palauttaa tiedon, onko korttiryhmä tyhjä.
 
         Returns:
-            True, jos korttiryhmässä ei ole kortteja
+            True, jos korttiryhmässä ei ole kortteja.
         """
-        return len(self.cards) == 0
+        return len(self._cards) == 0
 
     def contains_card(self, card: Card):
-        """Palauttaa tiedon, sisältääkö korttiryhmä tietyn kortin
+        """Palauttaa tiedon, sisältääkö korttiryhmä tietyn kortin.
 
         Args:
-            card (Card): Card-luokan olio
+            card (Card): Card-luokan olio.
 
         Returns:
-            True, jos kortti on ryhmässä
+            True, jos kortti on ryhmässä.
         """
-        return card in self.cards
+        return card in self._cards
 
     def add(self, card: Card):
-        """Lisää kortin ryhmään
+        """Lisää kortin ryhmään.
 
         Args:
-            card (Card): Card-luokan olio
+            card (Card): Card-luokan olio.
         """
-        self.cards.append(card)
+        self._cards.append(card)
 
     def remove(self, card: Card):
-        """Poistaa kortin ryhmästä jos se löytyy ryhmästä
+        """Poistaa kortin ryhmästä jos se löytyy ryhmästä.
 
         Args:
-            card (Card): Card-luokan olio
+            card (Card): Card-luokan olio.
         """
         if self.contains_card(card):
-            self.cards.remove(card)
+            self._cards.remove(card)
 
     def get_top_cards(self, number=1):
-        """Palauttaa ryhmään viimeksi lisätyt kortit
+        """Palauttaa ryhmään viimeksi lisätyt kortit.
 
         Args:
-            number (int, optional): palautettavien korttien määrä, oletusarvo 1
+            number (int, optional): palautettavien korttien määrä, oletusarvo 1.
 
         Returns:
             Argumentin mukainen määrä kortteja listana.
             Palautettavien korttien määrä on korkeintaan yhtä suuri kuin
             ryhmässä olevien korttien määrä.
         """
-        return [self.cards[-1-i] for i in reversed(range(min(number, len(self.cards))))]
+        return [self._cards[-1-i] for i in reversed(range(min(number, len(self._cards))))]
 
     @property
     def number_of_cards(self):
-        """Kertoo ryhmässä olevien korttien määrän
+        """Kertoo ryhmässä olevien korttien määrän.
 
         Returns:
-            Korttien lukumäärä
+            Korttien lukumäärä.
         """
-        return len(self.cards)
+        return len(self._cards)
 
     def __iter__(self):
-        self.n_cards = self.number_of_cards-1
+        self._n_cards = self.number_of_cards-1
         return self
 
     def __next__(self):
-        if self.n_cards >= 0:
-            card = self.cards[self.n_cards]
-            self.n_cards -= 1
+        if self._n_cards >= 0:
+            card = self._cards[self._n_cards]
+            self._n_cards -= 1
             return card
         raise StopIteration

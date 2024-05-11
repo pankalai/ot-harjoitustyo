@@ -5,38 +5,39 @@ dirname = os.path.dirname(__file__)
 
 
 class Card(pygame.sprite.Sprite):
-    """Luokka, jonka avulla ylläpidetään tietoa yksittäisestä pelikortista
+    """Luokka, jonka avulla ylläpidetään tietoa yksittäisestä pelikortista.
 
     Args:
-        Perii pygamen sprite-luokan
+        Perii pygamen sprite-luokan.
     """
 
     def __init__(self, suit: str, rank: int, show: bool = False):
-        """Luokan konstruktori, joka luo uuden pelikortin
+        """Luokan konstruktori, joka luo uuden pelikortin.
 
         Args:
-            suit (str): kortin maa
-            rank (int): kortin arvo
-            show (bool, optional): onko kortti näkyvissä eli kuvapuoli ylöspäin,
-            oletusarvona kuvapuoli on alaspäin
+            suit (str): Kortin maa.
+            rank (int): Kortin arvo.
+            show (bool, optional): Onko kortti näkyvissä eli kuvapuoli ylöspäin,
+            oletusarvona kuvapuoli on alaspäin.
         """
         super().__init__()
 
         self.suit = suit
         self.rank = rank
-        self.show = show
 
         self.rect = None
         self.image = None
-        self.image_size = None
-        self.front_side_image = None
+
+        self._show = show
+        self._image_size = None
+        self._front_side_image = None
 
     @property
     def color(self):
-        """Palauttaa kortin värin
+        """Palauttaa kortin värin.
 
         Returns:
-            Tavanomaisen pakan tapauksessa punainen tai musta, muutoin None
+            Tavanomaisen pakan tapauksessa punainen tai musta, muutoin None.
         """
         if self.suit in ("Diamonds", "Hearts"):
             return "red"
@@ -44,82 +45,109 @@ class Card(pygame.sprite.Sprite):
             return "black"
         return None
 
-    def flip(self):
-        """Kääntää kortin ympäri
+    @property
+    def is_visible(self):
+        """Palauttaa tiedon onko kortti kuvapuoli ylöspäin vai alaspäin.
+
+        Returns:
+           True, jos ylöspäin, ja False, jos alaspäin. 
         """
-        self.show = not self.show
+        return self._show
+
+    def flip(self):
+        """Kääntää kortin ympäri.
+        """
+        self._show = not self._show
+
+    def move(self, rel: tuple):
+        """Siirtää korttia.
+
+        Args:
+            rel (tuple): Siirron suuruus x- ja y-koordinaatteina.
+        """
+        self.rect.move_ip(rel)
 
     def set_image_size(self, size: tuple):
-        """Asettaa kortin kuvakoon
+        """Asettaa kortin kuvakoon.
 
         Args:
-            size (tuple): kortin koko tuplena (leveys,korkeus)
+            size (tuple): Kortin koko tuplena (leveys, korkeus).
         """
-        self.image_size = size
-        self.set_image()
+        self._image_size = size
+        self._set_image()
 
     def set_position(self, position: tuple):
-        """Asettaa kortin sijainnin
+        """Asettaa kortin sijainnin.
 
         Args:
-            position (tuple): kortin sijainti tuplena (vasen,ylä)
+            position (tuple): Kortin sijainti tuplena (vasen, ylä).
         """
         self.rect = self.image.get_rect()
         self.rect.x, self.rect.y = position
 
-    def set_image(self):
-        """Lataa kortin kuvan
+    def get_position(self):
+        """Palauttaa kortin sijainnin.
+
+        Returns:
+            Kortin vasemman yläkulman koordinaatit tuplena.
         """
-        if self.show:
+        return self.rect.x, self.rect.y
+
+    def _set_image(self):
+        """Lataa kortin kuvan.
+        """
+        if self._show:
             image = pygame.image.load(
                 os.path.join(dirname, "..", r"assets/cards",
                              self.filename() + ".png")
             )
-            self.front_side_image = True
+            self._front_side_image = True
         else:
             image = pygame.image.load(
                 os.path.join(dirname, "..", r"assets/cards", "back-side.png")
             )
-            self.front_side_image = False
+            self._front_side_image = False
 
-        self.image = pygame.transform.smoothscale(image, self.image_size)
-
-    def alternative_rank(self):
-        """Palauttaa kuvakortin vaihtoehtoisen arvon
-
-        Returns:
-            Kortin arvo, jos kyseessä ei ole kuvakortti, muussa tapauksessa jack,queen,king tai ace
-        """
-        if self.rank == 1:
-            file_rank = "ace"
-        elif self.rank == 11:
-            file_rank = "jack"
-        elif self.rank == 12:
-            file_rank = "queen"
-        elif self.rank == 13:
-            file_rank = "king"
-        else:
-            file_rank = self.rank
-        return file_rank
-
-    def filename(self):
-        """Palauttaa kortin tiedostonimen
-
-        Returns:
-            Kortin tiedostonimi merkkijonona
-        """
-        return f"{self.alternative_rank()}_of_{self.suit.lower()}"
+        self.image = pygame.transform.smoothscale(image, self._image_size)
 
     def update(self):
-        """Päivittää kortin kuvan jos se ei vastaa show-arvoa
+        """Päivittää kortin kuvan, jos se ei vastaa show-attribuutin arvoa.
         """
-        if self.show != self.front_side_image:
-            self.set_image()
+        if self._show != self._front_side_image:
+            self._set_image()
+
+    def _alternative_rank(self):
+        """Palauttaa kuvakortin vaihtoehtoisen arvon. 
+        Hyödynnetään kortin kuvan lataamisessa.
+
+        Returns:
+            Kortin arvo, jos kyseessä ei ole kuvakortti, muussa tapauksessa 
+            jack, queen, king tai ace.
+        """
+        match self.rank:
+            case 1:
+                return "ace"
+            case 11:
+                return "jack"
+            case 12:
+                return "queen"
+            case 13:
+                return "king"
+            case _:
+                return self.rank
+
+    def filename(self):
+        """Palauttaa kortin tiedostonimen.
+
+        Returns:
+            Kortin tiedostonimi merkkijonona.
+        """
+        return f"{self._alternative_rank()}_of_{self.suit.lower()}"
 
     def __str__(self):
         """Muodostaa kortista merkkijonomuotoisen esityksen.
 
         Returns:
-            Merkkijono, joka kertoo kortin arvon ja maan
+            Merkkijono, joka kertoo kortin arvon ja maan.
         """
         return f"{self.rank} of {self.suit}"

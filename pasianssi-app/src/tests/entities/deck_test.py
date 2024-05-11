@@ -27,10 +27,5 @@ class TestDeck(unittest.TestCase):
         self.deck.shuffle()
         self.deck.build()
         self.assertEqual(self.deck.number_of_cards, 52)
-        self.assertEqual(str(self.deck.cards[0]), "1 of Spades")
-        self.assertEqual(str(self.deck.cards[-1]), "13 of Hearts")
-
-
-# adding
-# clearing
-# shuffling
+        self.assertEqual(str(self.deck._cards[0]), "1 of Spades")
+        self.assertEqual(str(self.deck._cards[-1]), "13 of Hearts")

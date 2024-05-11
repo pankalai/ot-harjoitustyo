@@ -5,44 +5,36 @@ from entities.card import Card
 class Pile(CardGroup):
     """Luokka pasianssipelin pinojen hallintaan.
     Args:
-        CardGroup (_type_): perii CardGroup luokan
+        Perii CardGroup luokan
     """
 
-    def get_sub_cards(self, card: Card):
-        """Palauttaa pinossa olevan kortin ja sen päällä olevat kortit
+    def get_cards_on_top_of(self, card: Card):
+        """Palauttaa kortin päällä olevat kortit.
 
         Args:
-            card (Card): Card-luokan olio
+            card (Card): Card-luokan olio.
 
         Returns:
-            Lista, jossa haettava kortti ja sen päällä olevat kortit.
-            Jos korttia ei ole pinossa, niin tyhjä lista.
+            Kortin päällä olevat kortit listana.
+            Tyhjä lista, jos korttia ei ole pinossa.
         """
-        sub_cards = []
+        top_cards = []
         try:
-            index = self.cards.index(card)
+            index = self.card_index(card)
         except ValueError:
             pass
         else:
-            for i in range(index, len(self.cards)):
-                sub_cards.append(self.cards[i])
-        return sub_cards
-
-    def update(self):
-        """Kääntää pinon päällimmäisen kortin jos se on kuvapuoli alaspäin
-        """
-        if self.cards:
-            top_card = self.cards[-1]
-            if not top_card.show:
-                top_card.flip()
+            for i in range(index+1, len(self._cards)):
+                top_cards.append(self._cards[i])
+        return top_cards
 
     def __iter__(self):
-        self.n_cards = 0
+        self._n_cards = 0
         return self
 
     def __next__(self):
-        if self.n_cards < self.number_of_cards:
-            card = self.cards[self.n_cards]
-            self.n_cards += 1
+        if self._n_cards < self.number_of_cards:
+            card = self._cards[self._n_cards]
+            self._n_cards += 1
             return card
         raise StopIteration
