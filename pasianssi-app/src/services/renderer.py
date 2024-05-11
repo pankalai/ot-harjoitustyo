@@ -12,14 +12,14 @@ class Renderer:
     """Näytön piirtämisestä vastaava yliluokka, joka vastaa tietopalkista.
     """
 
-    def __init__(self, window, infobar=InfoBar()):
+    def __init__(self, window):
         """Luokan konstruktori.
 
         Args:
             window: Ikkuna, johon piirretään.
         """
         self._window = window
-        self._infobar = infobar
+        self._infobar = InfoBar()
 
     def update_infobar(self, time: str, moves: int):
         """Päivittää ajan ja siirrot tietopalkkiin.
@@ -50,19 +50,22 @@ class GameRenderer(Renderer):
         Args:
             window: Ikkuna, johon piirretään.
             game: Pelin logiikan sisältävä luokka.
+            ui_settings: Ulkoasun asetukset.
         """
         super().__init__(window)
 
         self.ui_settings = ui_settings
+
         self._game = game
+
         self._stack_area = None
         self._stack_image = None
         self._stack_and_waste_area = None
+        self._update_stack = True
+
         self._waste = pygame.sprite.LayeredUpdates()
         self._layered_cards = pygame.sprite.LayeredUpdates()
         self._rects_to_collide = pygame.sprite.Group()
-
-        self._update_stack = True
 
     @property
     def double_click_action(self):
@@ -94,7 +97,7 @@ class GameRenderer(Renderer):
 
         self._stack_area = pygame.Rect(
             self.ui_settings.stack_position, self.ui_settings.card_size)
-    
+
         width = (self.ui_settings.waste_position[0]-self.ui_settings.stack_position[0]
                  )+3*self.ui_settings.waste_offset+self.ui_settings.card_size[0]
         self._stack_and_waste_area = pygame.Rect(
@@ -106,7 +109,8 @@ class GameRenderer(Renderer):
         # Foundations
         left_pos, top_pos = self.ui_settings.foundation_position
         for foundation in self._game.foundations:
-            foundation.set_rect((left_pos, top_pos), self.ui_settings.card_size)
+            foundation.set_rect((left_pos, top_pos),
+                                self.ui_settings.card_size)
             left_pos += self.ui_settings.foundation_offset
 
             self._rects_to_collide.add(foundation)
@@ -116,7 +120,10 @@ class GameRenderer(Renderer):
         left_pos, top_pos = self.ui_settings.pile_position
         for pile in self._game.piles:
             pile.set_rect(
-                (left_pos, top_pos), (self.ui_settings.card_size[0], self._window.get_height()-top_pos))
+                (left_pos, top_pos),
+                (self.ui_settings.card_size[0],
+                 self._window.get_height()-top_pos)
+            )
             left_pos += self.ui_settings.pile_offset_left
 
             self._rects_to_collide.add(pile)
@@ -141,7 +148,7 @@ class GameRenderer(Renderer):
         """
         if not group:
             group = self._game.get_card_group(card)
-            
+
         if group in self._game.piles:
             group_index = self._game.piles.index(group)
             card_index = self._game.get_card_index_in_group(card, group)

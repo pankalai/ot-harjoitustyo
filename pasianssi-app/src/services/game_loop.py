@@ -13,8 +13,8 @@ class GameLoop:
 
         Args:
             game: Luokka, joka sisältää pelin logiikan.
-            event_queue: Luokka, joka tarjoaa pelin tapahtumat.
             renderer: Luokka, joka vastaa pelin tapahtumien päivittämisestä ruudulle.
+            event_queue: Luokka, joka tarjoaa pelin tapahtumat.
             clock: Luokka, joka huolehtii aikaan liittyvistä toiminnoista.
         """
         self._game = game
@@ -84,7 +84,7 @@ class GameLoop:
 
             elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                 clicked_sprite = None
-                
+
                 if self._renderer.collide_stack(event.pos):
                     self._game.deal()
                     self._renderer.handle_stack_click()

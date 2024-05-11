@@ -28,7 +28,9 @@ class StubClock:
     def start_clock(self):
         self.time = "11:11:11"
 
+
 stub_clock = StubClock
+
 
 class StubEvent:
     def __init__(self, event_type, button, pos, rel=(5, 5)):
@@ -70,7 +72,7 @@ stub_game = StubGame()
 
 
 class StubRenderer:
-    def __init__(self, game = stub_game):
+    def __init__(self, game=stub_game):
         self.game = game
 
     def double_click_action(self, card):

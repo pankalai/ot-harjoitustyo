@@ -31,7 +31,13 @@ Sovellus avautuu näkymään, jossa voi antaa nimimerkin ja valita joko helpon t
 
 ## Pelaaminen
 
-Pelin  tarkoituksena on järjestää kortit maittain suuruusjärjestykseen neljään peruspakkaan, jotka ovat pelin alussa tyhjiä. Vasemman reunan käsipakasta voi kääntää kortteja klikkaamalla pakan kuvaa. Kääntyvien korttien määrä riippuu pelin vaikeustasosta. Ainoastaan päällimmäisen kortin voi siirtää joko johonkin pinoon tai suoraan peruspakkaan. Kortteja voi siirtää myös pinosta toiseen tai peruspakasta takaisin pinoon. Kortin voi siirtää peruspakkaan tuplaklikkaamalla. Peli päättyy, kun kaikki kortit ovat peruspakoissa.
+Pelin  tarkoituksena on järjestää kortit maittain suuruusjärjestykseen neljään peruspakkaan, jotka ovat pelin alussa tyhjiä. Pelin tavoitteen saavuttamiseksi käytössä ovat seuraavat toiminnot:
+- Vasemman reunan käsipakasta voi kääntää kortteja klikkaamalla pakan kuvaa. Kääntyvien korttien määrä riippuu pelin vaikeustasosta. 
+- Käännetyistä korteista ainoastaan päällimmäisen kortin voi siirtää joko johonkin pinoon tai suoraan peruspakkaan.
+- Pinoon asetettavan kortin tulee olla vastakkaista väriä ja arvoltaan yhden pienempi kuin pinon päällimmäinen kortti. 
+- Kortteja voi siirtää myös pinosta toiseen tai peruspakasta takaisin pinoon. 
+- Tyhjään pinoon alimmaksi kortiksi tulee asettaa kuningas. 
+- Kortin siirto peruspakkaan onnistuu myös tuplaklikkaamalla.
 
 ![](./kuvat/pelinakyma.png)
 

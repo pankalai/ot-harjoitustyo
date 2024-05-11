@@ -10,9 +10,9 @@ Pelisilmukasta vastaavaa `GameLoop`-luokkaa testataan [TestGameLoop](https://git
 
 Klondike-pelistä vastaavaa `Klondike`-luokkaa testataan [TestKlondike](https://github.com/ohjelmistotekniikka-hy/python-todo-app/blob/master/src/tests/services/klondike_test.py)-testiluokalla.
 
-### Repositorio-luokat
+### Repositorio-luokka
 
-Repositorio-luokkaa `GameRepository` testataan ainoastaan testeissä käytössäolevalla tietokannalla. Testitietokannan nimi on konfiguroitu _.env.test_-tiedostoon. `GameRepository`-luokkaa testataan [TestGameRepository](https://github.com/ohjelmistotekniikka-hy/python-todo-app/blob/master/src/tests/repositories/game_repository_test.py)-testiluokalla.
+Repositorio-luokkaa `GameRepository` testataan testeissä käytössäolevalla tietokannalla. Testitietokannan nimi on konfiguroitu _.env.test_-tiedostoon. `GameRepository`-luokkaa testataan [TestGameRepository](https://github.com/ohjelmistotekniikka-hy/python-todo-app/blob/master/src/tests/repositories/game_repository_test.py)-testiluokalla.
 
 ### Testauskattavuus
 

@@ -14,11 +14,11 @@ class UI:
     Sovelluksen käyttöliittymästä vastaava luokka.
     """
 
-    def __init__(self, window, message_view=MessageView(), statistics_view=StatisticsView()):
+    def __init__(self, window, message_view=MessageView, statistics_view=StatisticsView):
         self._window = window
 
-        self._message_view = message_view
-        self._statistics_view = statistics_view
+        self._message_view = message_view()
+        self._statistics_view = statistics_view()
         self._start_view = StartView(self._statistics_view)
 
         self._game_service = None

@@ -54,6 +54,7 @@ def create_tables(connection):
 
 def insert_data(connection):
     cursor = connection.cursor()
+
     # Games
     cursor.execute("""
         INSERT INTO games (name) VALUES ("Klondike");

@@ -39,6 +39,7 @@ class UISettings:
     text_color_sub_bar = (55, 55, 55)
     text_size_sub_bar = 15
 
+
 class KlondikeUISettings:
     """Klondiken ulkoasuasetukset sisältävä luokka
     """
