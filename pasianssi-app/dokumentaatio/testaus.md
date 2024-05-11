@@ -14,7 +14,8 @@ Korttiryhmien hallinnasta vastaavaa `GroupHandler`-luokkaa testataan [TestGroupH
 
 ### Repositorio-luokka
 
-Repositorio-luokkaa `GameRepository` testataan testeissä käytössäolevalla tietokannalla. Testitietokannan nimi on konfiguroitu _.env.test_-tiedostoon. `GameRepository`-luokkaa testataan [TestGameRepository](https://github.com/pankalai/ot-harjoitustyo/blob/main/pasianssi-app/src/tests/repositories/game_repository_test.py)-testiluokalla.
+Repositorio-luokkaa `GameRepository` testataan testeissä käytössäolevalla tietokannalla. Testitietokannan nimi on konfiguroitu _.env.test_-tiedostoon. `GameRepository`-luokkaa testataan [TestGameRepository](https://github.com/pankalai/ot-harjoitustyo/blob/main/pasianssi-app/src/tests/repositories/game_repository_test.py)-testiluokalla. Testeissä on käytössä `GameService`-luokan olio, joka alustetaan niin, että sille injektoidaan riippuvuuksiksi game- ja game loop -luokat. Tätä varten testissä on käytössä luokat `StubGame` ja `StubGameLoop`. 
+
 
 ### Testauskattavuus
 
