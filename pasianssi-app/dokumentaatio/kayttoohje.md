@@ -2,6 +2,13 @@
 
 Lataa projektin viimeisimmän [releasen](https://github.com/pankalai/ot-harjoitustyo/releases/) lähdekoodi valitsemalla _Assets_-osion alta _Source code_.
 
+## Konfigurointi
+
+Tallennukseen käytettävän tiedoston nimeä voi halutessaan konfiguroida käynnistyshakemistossa _.env_-tiedostossa. Tiedosto luodaan automaattisesti _data_-hakemistoon, jos sitä ei siellä vielä ole. Tiedoston muoto on seuraava:
+
+```
+DATABASE_FILENAME=database.sqlite
+```
 
 ## Ohjelman käynnistäminen
 
