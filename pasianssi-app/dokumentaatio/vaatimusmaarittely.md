@@ -10,9 +10,11 @@ Yksi käyttäjärooli eli pelaaja. Pelaaja voi antaa nimimerkin, jolla pelatun p
 
 ## Käyttöliittymäluonnos
 
-Aloitusnäkymä. Luonnoksesta poiketen nimimerkki kirjoitetaan suoraan aloitusnäkymän nimimerkki-kenttään eikä aiemmin käytettyjä nimimerkkejä pääse katsomaan.
+Aloitusnäkymä. 
 
 ![](./kuvat/kayttoliittyma_hahmotelma1.png)
+
+Huom. Luonnoksesta poiketen nimimerkki kirjoitetaan sovelluksen toteutuksessa suoraan aloitusnäkymän nimimerkki-kenttään eikä aiemmin käytettyjä nimimerkkejä pääse katsomaan.
 
 Pelinäkymä
 

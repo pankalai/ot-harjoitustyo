@@ -29,6 +29,8 @@
 |       | 2    | Docstring-dokumentaation täydennys |
 | 9.5   | 6    | Testien lisäys erityisesti GameLoop- ja GameRepository-luokille |
 | 10.5  | 2    | Arkkitehtuurikuvauksen tarkennus |
-|       | 4    | Muun dokumentaation päivitys |
+|       | 2    | Muun dokumentaation päivitys |
+|       | 1    | Koodin viimeistelyä |
+| 11.5  | 2    | Dokumentaation viimeistely |
 ---------------------------------------------------------------------
-		| 104   |
+		| 105   |

@@ -188,4 +188,4 @@ Sovelluksen suunnittelussa on pyritty huomioimaan jatkokehityksen mahdollisuus e
 ## Ohjelman rakenteeseen jääneet heikkoudet
 
 ### Käyttöliittymä
-Siirtyminen näkymästä toiseen on toteutettu pitkälti näkymien UI-luokalle palauttamien arvojen perusteella. Lisäksi siirtyminen tilastonäkymään tapahtuu aloitusnäkymästä eikä UI-pääluokalla ole siitä tietoa. Tällainen toteutus ei ole kovin dynaaminen ja asettaakin rajoituksia käyttöliittymän jatkokehitykselle. Toisaalta käyttöliittymän pääluokka ei ole nykyisellään kovinkaan _raskas_, joten sen refaktorointi ei vaatisi suurta työtä.
+Siirtyminen näkymästä toiseen on toteutettu pitkälti näkymien UI-luokalle palauttamien arvojen perusteella. Lisäksi siirtyminen tilastonäkymään tapahtuu aloitusnäkymästä eikä UI-pääluokalla ole siitä tietoa. Tällainen toteutus ei ole kovin dynaaminen ja asettaa rajoituksia käyttöliittymän jatkokehitykselle. Toisaalta käyttöliittymän pääluokka ei ole nykyisellään kovinkaan _raskas_, joten sen refaktorointi ei vaatisi suurta työtä.

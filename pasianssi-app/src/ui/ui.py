@@ -1,7 +1,6 @@
 
 from ui.start_view import StartView
 from ui.message_view import MessageView
-from ui.statistics_view import StatisticsView
 from ui.ui_settings import ui_settings
 from services.game_service import GameService
 from services.game_loop import GameLoop
@@ -14,12 +13,11 @@ class UI:
     Sovelluksen käyttöliittymästä vastaava luokka.
     """
 
-    def __init__(self, window, message_view=MessageView, statistics_view=StatisticsView):
+    def __init__(self, window):
         self._window = window
 
-        self._message_view = message_view()
-        self._statistics_view = statistics_view()
-        self._start_view = StartView(self._statistics_view)
+        self._message_view = MessageView()
+        self._start_view = StartView()
 
         self._game_service = None
 

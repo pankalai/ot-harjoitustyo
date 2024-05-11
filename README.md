@@ -10,6 +10,7 @@ Sovelluksessa voi pelata Klondike-pasianssia, jossa tavoitteena on saada pinottu
 - [Käyttöohje](./pasianssi-app/dokumentaatio/kayttoohje.md)
 - [Vaatimusmäärittely](./pasianssi-app/dokumentaatio/vaatimusmaarittely.md)
 - [Arkkitehtuurikuvaus](./pasianssi-app/dokumentaatio/arkkitehtuuri.md)
+- [Testausdokumentti](./pasianssi-app/dokumentaatio/testaus.md)
 - [Työaikakirjanpito](./pasianssi-app/dokumentaatio/tuntikirjanpito.md)
 - [Muutosloki](./pasianssi-app/dokumentaatio/changelog.md)
 

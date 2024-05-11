@@ -1,7 +1,8 @@
 import pygame
 from ui.element import Element, Button, InputField
-from services.klondike import klondike_service
 from ui.ui_settings import ui_settings
+from ui.statistics_view import StatisticsView
+from services.klondike import klondike_service
 
 
 class StartView:
@@ -10,9 +11,9 @@ class StartView:
     Käyttäjänimen antaminen ja vaikeustason valinta.
     """
 
-    def __init__(self, statistics_view):
+    def __init__(self):
         self._background_color = ui_settings.background_color
-        self._statistics_view = statistics_view
+        self._statistics_view = StatisticsView()
 
         self._game = klondike_service
 
