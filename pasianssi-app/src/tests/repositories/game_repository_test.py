@@ -2,12 +2,6 @@ import unittest
 from repositories.game_repository import game_repository
 from services.game_service import GameService
 from services.clock import Clock
-from services.event_queue import EventQueue
-
-
-class StubRenderer:
-    def render(self):
-        pass
 
 
 class StubGame:

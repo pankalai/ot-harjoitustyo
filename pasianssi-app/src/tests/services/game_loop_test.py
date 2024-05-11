@@ -1,8 +1,6 @@
 import unittest
 from unittest.mock import Mock, ANY
 from services.game_loop import GameLoop
-from services.klondike import Klondike
-from services.clock import Clock
 from entities.card import Card
 from entities.card_group import CardGroup
 import pygame
