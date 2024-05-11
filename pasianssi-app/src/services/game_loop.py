@@ -107,7 +107,7 @@ class GameLoop:
         """
         clicked_sprite = self._get_hovered_sprite(pos)
         if clicked_sprite:
-            if self._renderer.double_click_action([clicked_sprite]):
+            if self._game.double_click_action([clicked_sprite]):
                 self._moves += 1
             self._renderer.finish_card_move([clicked_sprite])
 

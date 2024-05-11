@@ -48,6 +48,15 @@ class Klondike:
         """
         return self._level
 
+    @property
+    def double_click_action(self):
+        """Palauttaa tiedon siitä, mikä metodi liittyy tuplaklikkaus-tapahtumaan.
+
+        Returns:
+            Luokan metodi.
+        """
+        return self.add_to_group
+
     def set_level(self, level: int):
         """Pelin vaikeustason asettaminen.
 
