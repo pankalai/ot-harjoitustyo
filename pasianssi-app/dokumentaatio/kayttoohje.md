@@ -5,18 +5,18 @@ Lataa projektin viimeisimmän [releasen](https://github.com/pankalai/ot-harjoitu
 
 ## Ohjelman käynnistäminen
 
-Riippuvuudet asennetaan komennolla:
+Ennen ohjelman käynnistämistä asenna riippuvuudet komennolla
 
 ```bash
 poetry install
 ```
 
-Alustustoimenpiteet suoritetaan komennolla
+Sen jälkeen suorita alustustoimenpiteet komennolla
 ```bash
 poetry run invoke build
 ```
 
-Ohjelma käynnistyy komennolla:
+Näiden jälkeen ohjelman voi käynnistää komennolla
 
 ```
 poetry run invoke start
