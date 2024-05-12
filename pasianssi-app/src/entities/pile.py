@@ -8,6 +8,10 @@ class Pile(CardGroup):
         Perii CardGroup luokan
     """
 
+    def update(self):
+        if self._cards and not self._cards[-1].is_visible:
+            self._cards[-1].flip()
+
     def get_cards_on_top_of(self, card: Card):
         """Palauttaa kortin päällä olevat kortit.
 

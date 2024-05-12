@@ -78,8 +78,8 @@ Klondike-pelin loogisen tietomallin muodostavat seuraavat luokat:
 
 - `Klondike`: Pelin logiikasta vastaava luokka.
 - `GroupHandler`: Luokka, joka vastaa korttien siirrosta ryhmästä toiseen ja joka tietää kunkin kortin ryhmän. Voi myös tyhjentää tuntemansa korttiryhmät.
-- `CardGroup`: Korttiryhmästä vastaava luokka. Näitä ovat käsipakka, käsipakan kääntöpakka ja peruspakat sekä käyttöliittymässä siirrettävänä olevat kortit.
-- `Pile`: Pinosta (7 kpl) vastaava luokka. Perii luokan CardGroup. 
+- `CardGroup`: Korttiryhmästä vastaava luokka. Näitä ovat käsipakka, käsipakan kääntöpakka ja peruspakat sekä pelinäkymässä siirrettävänä olevat kortit.
+- `Pile`: Pinosta (7 kpl) vastaava luokka. Kääntää automaattisesti päällimmäisen kortin, jos se on kuvapuoli alaspäin.
 - `Deck`: Korttipakasta vastaava luokka. 
 - `Card`: Yksittäisestä kortista vastaava luokka.
 
@@ -92,7 +92,7 @@ Klondike-pelin loogisen tietomallin muodostavat seuraavat luokat:
     Klondike "1" -- "7" Pile
     CardGroup <|-- Pile
     GroupHandler ..|> CardGroup
-    CardGroup ..|> Card
+    Pile ..|> Card
 ```
 
 
@@ -138,16 +138,17 @@ sequenceDiagram
   participant GameLoop
   participant Klondike
   participant GroupHandler
+
   User->>GameLoop: click card
   GameLoop->>Renderer: get_top_card_at_position()
   Renderer-->>GameLoop: card
-  GameLoop ->> Klondike: create_movable_card_set(card)
+  GameLoop->>Klondike: create_movable_card_set(card)
   Klondike->>Klondike: is_movable = True
   Klondike->>Klondike: get_cards_on_top_of(card)
   Klondike->>GroupHandler: get_current_group(card)
-  GroupHandler-->>Klondike: Pile
-  Klondike->>Pile: get_cards_on_top_of(card)
-  Pile-->>Klondike: cards
+  GroupHandler-->>Klondike: OldPile
+  Klondike->>OldPile: get_cards_on_top_of(card)
+  OldPile-->>Klondike: cards
   Klondike-->>GameLoop: cards
   GameLoop->>Renderer: handle_grabbed_cards(cards)
 
@@ -156,16 +157,20 @@ sequenceDiagram
 
   GameLoop->>Renderer: collided_groups(bottom_card)
   Renderer->>GameLoop: group
+
   GameLoop->>Klondike: add_to_group(cards, group)
-  Klondike->>Klondike: is_movable(bottom_card) = True
-  Klondike->>Klondike: get_card_group(bottom_card) = Pile
-  Klondike->>Klondike: add_to_pile(cards, Pile) = True
-  Klondike->>Klondike: valid_to_pile(cards) = True
+  Klondike->>Klondike: is_movable(bottom_card)
+  Klondike->>Klondike: get_card_group(bottom_card)
+  Klondike->>Klondike: add_to_pile(cards, group)
+  Klondike->>Klondike: valid_to_pile(cards)
   Klondike->>GroupHandler: add_to_group(card, pile)
-  Klondike->>Old_Pile: get_top_cards()
-  Old_Pile-->>Klondike: card
-  Klondike->>Card: flip()
+  GroupHandler->>NewPile: add(card)
+  GroupHandler->>GroupHandler: remove_from_group(card, old_pile)
+  GroupHandler->>OldPile: remove(card)
+  OldPile->>OldPile: update()
+  OldPile->>Card: flip()
   Klondike-->>GameLoop: True
+
   GameLoop->>Renderer: finish_card_move(cards)
   Renderer->>Klondike: get_card_group(bottom_card)
   Klondike->>GroupHandler: get_current_group(card)
@@ -173,8 +178,8 @@ sequenceDiagram
   Klondike-->>Renderer: group
   Renderer->>Renderer: update_card_position(card, group)
   Renderer->>Klondike: get_card_index_in_group(card)
-  Klondike->>Pile: card_index(card)
-  Pile-->>Klondike: index
+  Klondike->>NewPile: card_index(card)
+  NewPile-->>Klondike: index
   Klondike-->>Renderer: index
   Renderer->>Card: set_position()
 

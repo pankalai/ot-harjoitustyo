@@ -108,6 +108,7 @@ class CardGroup(pygame.sprite.Sprite):
         """
         if self.contains_card(card):
             self._cards.remove(card)
+            self.update()
 
     def get_top_cards(self, number=1):
         """Palauttaa ryhmään viimeksi lisätyt kortit.
@@ -121,6 +122,9 @@ class CardGroup(pygame.sprite.Sprite):
             ryhmässä olevien korttien määrä.
         """
         return [self._cards[-1-i] for i in reversed(range(min(number, len(self._cards))))]
+
+    def update(self):
+        pass
 
     @property
     def number_of_cards(self):

@@ -253,13 +253,13 @@ class Klondike:
         return [card] + self._get_cards_on_top_of(card)
 
     def add_to_group(self, card_group: list, group=None):
-        """Lisää kortit ryhmään, jos se on sallittua.
-        Jos kortti/kortit siirretään pois pinosta, kääntää
-        kyseisen pinon päällimmäisen kortin.
+        """Lisää kortit ryhmään, jos se on sallittua. Jos ryhmä
+        puuttuu, tulkitaan, että ollaan lisäämässä peruspakkaan.
 
         Args:
             card_group (list): Lista kortteja, joita ollaan lisäämässä.
-            group: Ryhmä, johon ollaan lisäämässä.
+            group: Ryhmä, johon ollaan lisäämässä. Jos puuttuu, niin
+            tulkitaan, että ollaan siirtämässä peruspakkaan.
 
         Returns:
             True, jos siirto on mahdollinen, muuten False.
@@ -267,23 +267,17 @@ class Klondike:
         if not self._is_movable(card_group[0]):
             return False
 
-        old_group = self.get_card_group(card_group[0])
-
-        if not group and old_group.get_top_cards(1)[0] != card_group[0]:
+        current_group = self.get_card_group(card_group[0])
+        if not group and current_group.get_top_cards(1)[0] != card_group[0]:
             return False
 
-        valid = False
         if group in self.piles:
-            valid = self._add_to_pile(card_group, group)
-        elif not group or group in self.foundations:
-            valid = self._add_to_foundation(card_group, group)
+            return self._add_to_pile(card_group, group)
 
-        if valid and old_group in self.piles:
-            card = old_group.get_top_cards()
-            if card and not card[0].is_visible:
-                card[0].flip()
+        if not group or group in self.foundations:
+            return self._add_to_foundation(card_group, group)
 
-        return valid
+        return False
 
 
 def valid_to_pile(card: Card, pile: Pile):

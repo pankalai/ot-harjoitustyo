@@ -32,5 +32,6 @@
 |       | 2    | Muun dokumentaation päivitys |
 |       | 1    | Koodin viimeistelyä |
 | 11.5  | 2    | Dokumentaation viimeistely |
+| 12.5  | 2    | Bugikorjaus |
 ---------------------------------------------------------------------
-		| 105   |
+		| 107   |

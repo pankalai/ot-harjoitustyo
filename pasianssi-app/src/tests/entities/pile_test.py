@@ -29,3 +29,14 @@ class TestPile(unittest.TestCase):
             lkm += 1
         self.assertEqual(lkm, 3)
         self.assertEqual(cards[0], self.card1)
+
+    def test_kortin_poisto_saa_aikaan_paallimmaisen_kortin_kaantymisen(self):
+        self.assertFalse(self.card2.is_visible)
+        self.pile.remove(self.card3)
+        self.assertTrue(self.card2.is_visible)
+
+    def test_kortin_poisto_ei_kaanna_korttia_jos_on_jo_nakyvissa(self):
+        self.card2.flip()
+        self.assertTrue(self.card2.is_visible)
+        self.pile.remove(self.card3)
+        self.assertTrue(self.card2.is_visible)
