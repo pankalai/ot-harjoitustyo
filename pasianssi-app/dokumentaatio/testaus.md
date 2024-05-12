@@ -40,7 +40,7 @@ Kaikki [määrittelydokumentin](./vaatimusmaarittely.md) ja käyttöohjeen lista
 
 ## Sovellukseen jääneet laatuongelmat
 
-Sovellus ei anna tällä hetkellä järkeviä virheilmoituksia, seuraavissa tilanteissa:
+Sovellus ei anna tällä hetkellä järkeviä virheilmoituksia seuraavissa tilanteissa:
 
-- Konfiguraation määrittelemään tiedostoon ei ole luku-/kirjoitusoikeuksia
+- Konfiguraation määrittelemään tiedostoon ei ole luku-/kirjoitusoikeutta
 - SQLite tietokantaa ei ole alustettu, eli `python -m poetry run invoke build`-komentoa ei ole suoritettu
