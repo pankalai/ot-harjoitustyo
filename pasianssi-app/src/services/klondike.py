@@ -144,9 +144,6 @@ class Klondike:
                 return False
             card = card[0]
 
-        if not isinstance(card, Card):
-            return False
-
         if foundation:
             if foundation in self.foundations:
                 if valid_to_foundation(card, foundation):
@@ -253,8 +250,7 @@ class Klondike:
         return [card] + self._get_cards_on_top_of(card)
 
     def add_to_group(self, card_group: list, group=None):
-        """Lisää kortit ryhmään, jos se on sallittua. Jos ryhmä
-        puuttuu, tulkitaan, että ollaan lisäämässä peruspakkaan.
+        """Lisää kortit ryhmään, jos se on sallittua. 
 
         Args:
             card_group (list): Lista kortteja, joita ollaan lisäämässä.
