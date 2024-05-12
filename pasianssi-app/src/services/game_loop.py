@@ -76,7 +76,7 @@ class GameLoop:
                 if self._clock.get_ticks() - self._click_time < 500:
                     self._handle_double_click(event.pos)
 
-                elif not self._grabbed_cards.is_empty():
+                if not self._grabbed_cards.is_empty():
                     self._handle_collision(self._grabbed_cards.bottom_card())
 
                 self._grabbed_cards.clear()

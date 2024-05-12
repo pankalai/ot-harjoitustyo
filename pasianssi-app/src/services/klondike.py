@@ -234,7 +234,6 @@ class Klondike:
         Returns:
             True, jos kortti on siirrettävissä, muuten False.
         """
-
         if not card.is_visible:
             return False
         group = self._group_handler.get_current_group(card)
@@ -255,6 +254,8 @@ class Klondike:
 
     def add_to_group(self, card_group: list, group=None):
         """Lisää kortit ryhmään, jos se on sallittua.
+        Jos kortti/kortit siirretään pois pinosta, kääntää
+        kyseisen pinon päällimmäisen kortin.
 
         Args:
             card_group (list): Lista kortteja, joita ollaan lisäämässä.
@@ -267,6 +268,9 @@ class Klondike:
             return False
 
         old_group = self.get_card_group(card_group[0])
+
+        if not group and old_group.get_top_cards(1)[0] != card_group[0]:
+            return False
 
         valid = False
         if group in self.piles:
