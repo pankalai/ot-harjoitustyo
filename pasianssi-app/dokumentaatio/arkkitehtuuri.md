@@ -98,7 +98,7 @@ Klondike-pelin loogisen tietomallin muodostavat seuraavat luokat:
 
 ## Tietojen pysyväistallennus
 
-Pakkauksen _repositories_-luokka `GameRepository` huolehtii pelattujen pelien tietojen tallentamisesta SQLite-tietokantaan. Pelattua peliä talletettaessa tarkistetaan löytyykö kyseinen peli ja taso tietokannasta, ja jos ei löydy, niin molemmille luodaan uudet tietueet erillisiin tauluihin. GameRepository myös palauttaa tietoja pelatuista peleistä käytetyn ajan ja siirtojen mukaan järjestettynä. Tallennustapa on mahdollista korvata uudella toteutuksella, jos talletustapaa päätetään vaihtaa.
+Pakkauksen _repositories_-luokka `GameRepository` huolehtii pelattujen pelien tietojen tallentamisesta SQLite-tietokantaan. Pelattua peliä talletettaessa tarkistetaan löytyykö pelattava peli ja taso tietokannasta, ja jos ei löydy, niin molemmille luodaan uudet tietueet erillisiin tauluihin. GameRepository myös palauttaa tietoja pelatuista peleistä käytetyn ajan ja siirtojen mukaan järjestettynä. Tallennustapa on mahdollista korvata uudella toteutuksella, jos talletustapaa päätetään vaihtaa.
 
 
 ## Päätoiminnallisuudet
