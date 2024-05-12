@@ -1,9 +1,12 @@
 # Pasianssi
 
-Sovelluksessa voi pelata Klondike-pasianssia, jossa tavoitteena on saada pinottua kaikki kortit maittain neljään niin sanottuun peruspakkaan järjestyksessä ässästä kuninkaaseen.
+Sovelluksessa voi pelata Klondike-pasianssia, jossa tavoitteena on saada pinottua kortit maittain neljään pakkaan järjestyksessä ässästä kuninkaaseen.
 
 ## Releaset
-[Releaset](https://github.com/pankalai/ot-harjoitustyo/releases/)
+Ohjelman julkaisut löytyvät [täältä](https://github.com/pankalai/ot-harjoitustyo/releases/).
+
+## Python-versiosta
+Sovellus on testattu Python-versiolla 3.8. Vanhempien Python-versioiden kanssa saattaa ilmetä ongelmia.
 
 ## Dokumentaatio
 
@@ -14,21 +17,21 @@ Sovelluksessa voi pelata Klondike-pasianssia, jossa tavoitteena on saada pinottu
 - [Työaikakirjanpito](./pasianssi-app/dokumentaatio/tuntikirjanpito.md)
 - [Muutosloki](./pasianssi-app/dokumentaatio/changelog.md)
 
-
 ## Asennus
 
-Mene pasianssi-app hakemistoon.
+Mene pasianssi-app hakemistoon
+
 1. Asenna riippuvuudet komennolla
 ```
 poetry install
 ```
 
-2. Suorita alustustoimenpiteet komennolla
+2. Suorita alustustoimenpiteet komennolla:
 ```
 poetry run invoke build
 ```
 
-2. Käynnistä sovellus komennolla
+2. Käynnistä sovellus komennolla:
 ```
 poetry run invoke start
 ```
